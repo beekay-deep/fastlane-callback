@@ -166,9 +166,94 @@ def api_test():
 
     except Exception as error:
         print("API test failed:", str(error))
-        return "Fastlane API test: database error.", 500
+        @app.route("/product-test")
+def product_test():
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
 
-@app.route("/product-test")
+        cursor.execute("""
+            SELECT access_token
+            FROM aliexpress_tokens
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if not row:
+            return "Product test: no access token found.", 500
+
+        access_token = row[0]
+
+        app_key = os.environ.get("ALIEXPRESS_APP_KEY")
+        app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
+
+        if not app_key or not app_secret:
+            return "Product test: AliExpress credentials are not configured.", 500
+
+        api_name = "/aliexpress.ds.product.get"
+
+        timestamp = str(int(time.time() * 1000))
+
+        params = {
+            "app_key": app_key,
+            "product_id": "1005011756447612",
+            "ship_to_country": "ZA",
+            "target_currency": "ZAR",
+            "target_language": "en",
+            "sign_method": "sha256",
+            "timestamp": timestamp
+        }
+
+        sorted_keys = sorted(params.keys())
+
+        sign_string = api_name
+
+        for key in sorted_keys:
+            sign_string += key + params[key]
+
+        digest = hmac.new(
+            app_secret.encode("utf-8"),
+            sign_string.encode("utf-8"),
+            hashlib.sha256
+        ).hexdigest().upper()
+
+        params["sign"] = digest
+
+        query_string = urllib.parse.urlencode(params)
+
+        api_url = (
+            "https://api-sg.aliexpress.com/rest"
+            + api_name
+            + "?"
+            + query_string
+        )
+
+        request = urllib.request.Request(
+            api_url,
+            headers={
+                "Authorization": "Bearer " + access_token
+            }
+        )
+
+        with urllib.request.urlopen(request, timeout=30) as response:
+            response_body = response.read().decode("utf-8")
+
+        data = json.loads(response_body)
+
+        return """
+        <h1>Fastlane Product API Test</h1>
+        <p>AliExpress product API request completed.</p>
+        <p>Response received successfully.</p>
+        """
+
+    except Exception as error:
+        print("Product API test failed:", str(error))
+        return "Product API test failed. Check Render logs.", 500
 def product_test():
     try:
         connection = get_database_connection()
