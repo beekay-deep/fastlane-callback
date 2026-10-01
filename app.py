@@ -167,6 +167,38 @@ def api_test():
     except Exception as error:
         print("API test failed:", str(error))
         return "Fastlane API test: database error.", 500
+
+@app.route("/product-test")
+def product_test():
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT access_token
+            FROM aliexpress_tokens
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if not row:
+            return "Product test: no access token found.", 500
+
+        access_token = row[0]
+
+        # Product test will use this stored token.
+        # We will add the AliExpress API request next.
+        return "Product test: access token retrieved successfully."
+
+    except Exception as error:
+        print("Product test failed:", str(error))
+        return "Product test: database error.", 500
+
 @app.route("/")
 def home():
     return "Fastlane callback server is running."
