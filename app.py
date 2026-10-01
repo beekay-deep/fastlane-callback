@@ -140,6 +140,33 @@ def status():
     except Exception as error:
         print("Status check failed:", str(error))
         return "Fastlane status: database check failed.", 500
+
+@app.route("/api-test")
+def api_test():
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT access_token
+            FROM aliexpress_tokens
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if not row:
+            return "Fastlane API test: no access token found.", 500
+
+        return "Fastlane API test: stored access token found."
+
+    except Exception as error:
+        print("API test failed:", str(error))
+        return "Fastlane API test: database error.", 500
 @app.route("/")
 def home():
     return "Fastlane callback server is running."
