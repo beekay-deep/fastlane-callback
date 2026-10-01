@@ -120,7 +120,26 @@ def save_tokens(token_data):
 
     return True
 
+@app.route("/status")
+def status():
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
 
+        cursor.execute("SELECT COUNT(*) FROM aliexpress_tokens")
+        count = cursor.fetchone()[0]
+
+        cursor.close()
+        connection.close()
+
+        if count > 0:
+            return "Fastlane status: token record exists in database."
+        else:
+            return "Fastlane status: no token record found."
+
+    except Exception as error:
+        print("Status check failed:", str(error))
+        return "Fastlane status: database check failed.", 500
 @app.route("/")
 def home():
     return "Fastlane callback server is running."
