@@ -6,6 +6,7 @@ import hashlib
 import urllib.parse
 import urllib.request
 import json
+import psycopg2
 
 app = Flask(__name__)
 
@@ -14,17 +15,13 @@ API_NAME = "/auth/token/create"
 
 
 def generate_sign(params, app_secret):
-    # Sort parameter names in ASCII order
     sorted_keys = sorted(params.keys())
 
-    # Build the string to sign
     sign_string = API_NAME
 
     for key in sorted_keys:
-        value = params[key]
-        sign_string += key + value
+        sign_string += key + params[key]
 
-    # HMAC-SHA256 using the App Secret
     digest = hmac.new(
         app_secret.encode("utf-8"),
         sign_string.encode("utf-8"),
@@ -32,6 +29,96 @@ def generate_sign(params, app_secret):
     ).hexdigest().upper()
 
     return digest
+
+
+def get_database_connection():
+    return psycopg2.connect(
+        os.environ["DATABASE_URL"]
+    )
+
+
+def find_value(data, wanted_key):
+    if isinstance(data, dict):
+        if wanted_key in data:
+            return data[wanted_key]
+
+        for value in data.values():
+            result = find_value(value, wanted_key)
+            if result is not None:
+                return result
+
+    elif isinstance(data, list):
+        for item in data:
+            result = find_value(item, wanted_key)
+            if result is not None:
+                return result
+
+    return None
+
+
+def save_tokens(token_data):
+    access_token = find_value(token_data, "access_token")
+    refresh_token = find_value(token_data, "refresh_token")
+    expires_in = find_value(token_data, "expires_in")
+    refresh_expires_in = find_value(token_data, "refresh_expires_in")
+    seller_id = find_value(token_data, "seller_id")
+    account_id = find_value(token_data, "account_id")
+    user_id = find_value(token_data, "user_id")
+
+    if not access_token or not refresh_token:
+        return False
+
+    connection = get_database_connection()
+
+    try:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS aliexpress_tokens (
+                id SERIAL PRIMARY KEY,
+                access_token TEXT NOT NULL,
+                refresh_token TEXT NOT NULL,
+                expires_in BIGINT,
+                refresh_expires_in BIGINT,
+                seller_id TEXT,
+                account_id TEXT,
+                user_id TEXT,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        cursor.execute("""
+            DELETE FROM aliexpress_tokens
+        """)
+
+        cursor.execute("""
+            INSERT INTO aliexpress_tokens (
+                access_token,
+                refresh_token,
+                expires_in,
+                refresh_expires_in,
+                seller_id,
+                account_id,
+                user_id
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (
+            access_token,
+            refresh_token,
+            expires_in,
+            refresh_expires_in,
+            seller_id,
+            account_id,
+            user_id
+        ))
+
+        connection.commit()
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    return True
 
 
 @app.route("/")
@@ -58,6 +145,12 @@ def callback():
         <p>AliExpress credentials are not configured.</p>
         """, 500
 
+    if not os.environ.get("DATABASE_URL"):
+        return """
+        <h1>Fastlane Error</h1>
+        <p>Database connection is not configured.</p>
+        """, 500
+
     timestamp = str(int(time.time() * 1000))
 
     params = {
@@ -79,19 +172,26 @@ def callback():
 
         token_data = json.loads(response_body)
 
-        # Do not display access or refresh tokens in the browser.
+        saved = save_tokens(token_data)
+
+        if not saved:
+            return """
+            <h1>Fastlane Token Error</h1>
+            <p>AliExpress responded, but no usable tokens were received.</p>
+            """, 500
+
         return """
         <h1>Fastlane Authorization Successful</h1>
-        <p>AliExpress authorization code was exchanged successfully.</p>
-        <p>Token response received from AliExpress.</p>
+        <p>AliExpress authorization was completed successfully.</p>
+        <p>Your authorization tokens have been securely stored.</p>
         """
 
     except Exception as error:
-        print("AliExpress token request failed:", str(error))
+        print("Fastlane error:", str(error))
 
         return """
         <h1>Fastlane Token Error</h1>
-        <p>Fastlane received the authorization code, but the token request failed.</p>
+        <p>Fastlane received the authorization code, but could not complete the token process.</p>
         """, 500
 
 
