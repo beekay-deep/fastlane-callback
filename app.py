@@ -17,7 +17,7 @@ API_NAME = "/auth/token/create"
 def generate_sign(params, app_secret):
     sorted_keys = sorted(params.keys())
 
-    sign_string = API_NAME
+    sign_string = ""
 
     for key in sorted_keys:
         sign_string += key + params[key]
