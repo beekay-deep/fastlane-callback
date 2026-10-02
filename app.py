@@ -202,7 +202,9 @@ def product_test():
         params = {
             "app_key": app_key,
             "method": api_name,
-            "access_token": access_token,
+            "session": access_token,
+            "format": "json",
+            "v": "2.0",
             "product_id": "1005011756447612",
             "ship_to_country": "ZA",
             "target_currency": "ZAR",
