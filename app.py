@@ -245,7 +245,7 @@ def product_test():
 
         data = json.loads(response_body)
 
-       return "<pre>" + json.dumps(data, indent=2) + "</pre>" 
+        return "<pre>" + json.dumps(data, indent=2) + "</pre>" 
 
     except Exception as error:
         print("Product API test failed:", str(error))
