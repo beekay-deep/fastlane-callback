@@ -227,7 +227,7 @@ def product_test():
 
         query_string = urllib.parse.urlencode(params)
 
-       api_url = (
+api_url = (
     "https://api-sg.aliexpress.com/sync?"
     + query_string
 )
