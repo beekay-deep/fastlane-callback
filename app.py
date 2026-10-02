@@ -245,11 +245,7 @@ def product_test():
 
         data = json.loads(response_body)
 
-        return """
-        <h1>Fastlane Product API Test</h1>
-        <p>AliExpress product API request completed.</p>
-        <p>Response received successfully.</p>
-        """
+       return "<pre>" + json.dumps(data, indent=2) + "</pre>" 
 
     except Exception as error:
         print("Product API test failed:", str(error))
