@@ -232,8 +232,9 @@ def product_test():
         query_string = urllib.parse.urlencode(params)
 
         api_url = (
-            "https://api-sg.aliexpress.com/router/rest"
-)
+            "https://api-sg.aliexpress.com/router/rest?"
+            + query_string
+        )
         request = urllib.request.Request(
             api_url,
             headers={
