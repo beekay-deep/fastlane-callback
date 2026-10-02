@@ -17,7 +17,7 @@ API_NAME = "/auth/token/create"
 def generate_sign(params, app_secret):
     sorted_keys = sorted(params.keys())
 
-    sign_string = ""
+    sign_string = api_name
 
     for key in sorted_keys:
         sign_string += key + params[key]
@@ -197,7 +197,8 @@ def product_test():
 
         api_name = "aliexpress.ds.product.get"
 
-        timestamp = str(int(time.time() * 1000))
+        
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
         params = {
             "app_key": app_key,
@@ -209,7 +210,7 @@ def product_test():
             "ship_to_country": "ZA",
             "target_currency": "ZAR",
             "target_language": "en",
-            "sign_method": "sha256",
+            "sign_method": "hmac",
             "timestamp": timestamp
         }
 
@@ -231,9 +232,8 @@ def product_test():
         query_string = urllib.parse.urlencode(params)
 
         api_url = (
-            "https://api-sg.aliexpress.com/sync?"
-            + query_string
-        )
+            "https://api-sg.aliexpress.com/router/rest"
+)
         request = urllib.request.Request(
             api_url,
             headers={
