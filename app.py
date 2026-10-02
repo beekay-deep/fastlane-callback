@@ -166,7 +166,7 @@ def api_test():
 
     except Exception as error:
         print("API test failed:", str(error))
- @app.route("/product-test")
+@app.route("/product-test")
 def product_test():
     try:
         connection = get_database_connection()
