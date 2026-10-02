@@ -195,12 +195,13 @@ def product_test():
         if not app_key or not app_secret:
             return "Product test: AliExpress credentials are not configured.", 500
 
-        api_name = "/aliexpress.ds.product.get"
+        api_name = "aliexpress.ds.product.get"
 
         timestamp = str(int(time.time() * 1000))
 
         params = {
             "app_key": app_key,
+            "method": api_name,
             "product_id": "1005011756447612",
             "ship_to_country": "ZA",
             "target_currency": "ZAR",
@@ -226,13 +227,10 @@ def product_test():
 
         query_string = urllib.parse.urlencode(params)
 
-        api_url = (
-            "https://api-sg.aliexpress.com/rest"
-            + api_name
-            + "?"
-            + query_string
-        )
-
+       api_url = (
+    "https://api-sg.aliexpress.com/sync?"
+    + query_string
+)
         request = urllib.request.Request(
             api_url,
             headers={
