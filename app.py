@@ -166,7 +166,7 @@ def api_test():
 
     except Exception as error:
         print("API test failed:", str(error))
-@app.route("/product-test")
+ @app.route("/product-test")
 def product_test():
     try:
         connection = get_database_connection()
@@ -197,10 +197,9 @@ def product_test():
 
         api_name = "aliexpress.ds.product.get"
 
-        
-        from datetime import datetime, timezone, timedelta
-
-           timestamp = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.now(
+            timezone(timedelta(hours=8))
+        ).strftime("%Y-%m-%d %H:%M:%S")
 
         params = {
             "app_key": app_key,
@@ -237,6 +236,7 @@ def product_test():
             "https://api-sg.aliexpress.com/router/rest?"
             + query_string
         )
+
         request = urllib.request.Request(
             api_url,
             headers={
@@ -249,13 +249,11 @@ def product_test():
 
         data = json.loads(response_body)
 
-        return "<pre>" + json.dumps(data, indent=2) + "</pre>" 
+        return "<pre>" + json.dumps(data, indent=2) + "</pre>"
 
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
-
-
    
 @app.route("/")
 def home():
