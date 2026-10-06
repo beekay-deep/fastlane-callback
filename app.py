@@ -201,6 +201,9 @@ def product_test():
             datetime.now(timezone.utc)
             + timedelta(hours=8)
         ).strftime("%Y-%m-%d %H:%M:%S")
+        
+        print("AliExpress timestamp:", timestamp)
+        
         params = {
             "app_key": app_key,
             "method": api_name,
