@@ -230,14 +230,12 @@ def product_test():
 
         api_url = "https://api-sg.aliexpress.com/sync"
         
-        request = urllib.request.Request(
-            api_url,
-            data=urllib.parse.urlencode(params).encode("utf-8"),
-            headers={
-                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-            },
-            method="POST"
-        )
+query_string = urllib.parse.urlencode(params)
+
+request = urllib.request.Request(
+    api_url + "?" + query_string,
+    method="GET"
+)
 
         with urllib.request.urlopen(request, timeout=30) as response:
             response_body = response.read().decode("utf-8")
