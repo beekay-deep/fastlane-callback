@@ -204,6 +204,7 @@ def product_test():
         params = {
             "app_key": app_key, 
             "access_token": access_token,
+            "method": api_name,
             "product_id": "1005011756447612",
             "ship_to_country": "ZA",
             "target_currency": "ZAR",
