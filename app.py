@@ -195,7 +195,7 @@ def product_test():
         if not app_key or not app_secret:
             return "Product test: AliExpress credentials are not configured.", 500
 
-        api_name = "/aliexpress.ds.product.get"
+        api_name = "aliexpress.ds.product.get"
 
         timestamp = str(int(time.time() * 1000)) 
         
