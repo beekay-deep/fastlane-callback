@@ -197,10 +197,10 @@ def product_test():
 
         api_name = "aliexpress.ds.product.get"
 
-        timestamp = datetime.now(
-            timezone(timedelta(hours=8))
+        timestamp = (
+            datetime.now(timezone.utc)
+            + timedelta(hours=8)
         ).strftime("%Y-%m-%d %H:%M:%S")
-
         params = {
             "app_key": app_key,
             "method": api_name,
