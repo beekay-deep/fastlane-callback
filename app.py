@@ -25,7 +25,7 @@ def generate_sign(params, app_secret):
     digest = hmac.new(
         app_secret.encode("utf-8"),
         sign_string.encode("utf-8"),
-        hashlib.sha256
+        hashlib.md5
     ).hexdigest().upper()
 
     return digest
