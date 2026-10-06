@@ -227,7 +227,7 @@ def product_test():
 
         params["sign"] = digest
 
-        api_url = "https://api-sg.aliexpress.com/rest/aliexpress.ds.product.get"
+        api_url = "https://api-sg.aliexpress.com/sync"
         
         request = urllib.request.Request(
             api_url,
