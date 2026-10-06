@@ -233,7 +233,7 @@ def product_test():
 
         params["sign"] = digest
 
-        api_url = "https://eco.taobao.com/router/rest"
+        api_url = "https://api-sg.aliexpress.com/sync"
 
         request = urllib.request.Request(
             api_url,
