@@ -197,7 +197,7 @@ def product_test():
 
         api_name = "/aliexpress.ds.product.get"
 
-        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") 
+        timestamp = str(int(time.time() * 1000)) 
         
         print("AliExpress timestamp:", timestamp)
         
