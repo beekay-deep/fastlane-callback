@@ -233,18 +233,15 @@ def product_test():
 
         params["sign"] = digest
 
-        query_string = urllib.parse.urlencode(params)
-
-        api_url = (
-            "https://api-sg.aliexpress.com/router/rest?"
-            + query_string
-        )
+        api_url = "https://eco.taobao.com/router/rest"
 
         request = urllib.request.Request(
             api_url,
+            data=urllib.parse.urlencode(params).encode("utf-8"),
             headers={
-                "Authorization": "Bearer " + access_token
-            }
+                "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+            },
+            method="POST"
         )
 
         with urllib.request.urlopen(request, timeout=30) as response:
