@@ -237,12 +237,12 @@ request = urllib.request.Request(
     method="GET"
 )
 
-        with urllib.request.urlopen(request, timeout=30) as response:
+with urllib.request.urlopen(request, timeout=30) as response:
             response_body = response.read().decode("utf-8")
 
-        data = json.loads(response_body)
+data = json.loads(response_body)
 
-        return "<pre>" + json.dumps(data, indent=2) + "</pre>"
+return "<pre>" + json.dumps(data, indent=2) + "</pre>"
 
     except Exception as error:
         print("Product API test failed:", str(error))
