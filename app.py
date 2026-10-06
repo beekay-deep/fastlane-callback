@@ -195,7 +195,7 @@ def product_test():
         if not app_key or not app_secret:
             return "Product test: AliExpress credentials are not configured.", 500
 
-        api_name = "aliexpress.ds.product.get"
+        api_name = "/aliexpress.ds.product.get"
 
         timestamp = (
             datetime.now(timezone.utc)
@@ -205,16 +205,13 @@ def product_test():
         print("AliExpress timestamp:", timestamp)
         
         params = {
-            "app_key": app_key,
-            "method": api_name,
-            "session": access_token,
-            "format": "json",
-            "v": "2.0",
+            "app_key": app_key, 
+            "access_token": access_token,
             "product_id": "1005011756447612",
             "ship_to_country": "ZA",
             "target_currency": "ZAR",
             "target_language": "en",
-            "sign_method": "hmac",
+            "sign_method": "sha256",
             "timestamp": timestamp
         }
 
@@ -228,12 +225,12 @@ def product_test():
         digest = hmac.new(
             app_secret.encode("utf-8"),
             sign_string.encode("utf-8"),
-            hashlib.md5
+            hashlib.sha256
         ).hexdigest().upper()
 
         params["sign"] = digest
 
-        api_url = "https://eco.taobao.com/router/rest"
+        api_url = "https://api-sg.aliexpress.com/rest/aliexpress.ds.product.get"
         
         request = urllib.request.Request(
             api_url,
