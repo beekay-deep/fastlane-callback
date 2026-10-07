@@ -412,53 +412,110 @@ def imported_products():
 
             <title>Fastlane - Imported Products</title>
 
-            <style>
+ <style>
 
-                body {{
-                    font-family: Arial, sans-serif;
-                    background: #f5f5f5;
-                    padding: 30px;
-                }}
+    body {{
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        margin: 0;
+        padding: 30px;
+    }}
 
-                h1 {{
-                    margin-bottom: 30px;
-                }}
+    .header {{
+        max-width: 1200px;
+        margin: 0 auto 30px auto;
+    }}
 
-                .products {{
-                    display: grid;
-                    grid-template-columns:
-                        repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 20px;
-                }}
+    .header h1 {{
+        margin: 0;
+        font-size: 32px;
+    }}
 
-                .product-card {{
-                    background: white;
-                    padding: 20px;
-                    border-radius: 12px;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                }}
+    .header p {{
+        color: #666;
+        margin-top: 8px;
+    }}
 
-                .product-card img {{
-                    width: 100%;
-                    height: 220px;
-                    object-fit: contain;
-                }}
+    .products {{
+        max-width: 1200px;
+        margin: auto;
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+    }}
 
-                .product-card h2 {{
-                    font-size: 18px;
-                }}
+    .product-card {{
+        background: white;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }}
 
-                .product-card a {{
-                    display: inline-block;
-                    margin-top: 10px;
-                    padding: 10px 15px;
-                    background: #007bff;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 6px;
-                }}
+    .product-image {{
+        width: 100%;
+        height: 240px;
+        object-fit: contain;
+        background: white;
+    }}
 
-            </style>
+    .product-info {{
+        padding: 20px;
+    }}
+
+    .product-title {{
+        font-size: 18px;
+        line-height: 1.4;
+        margin: 0 0 15px 0;
+    }}
+
+    .price {{
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }}
+
+    .stats {{
+        display: flex;
+        gap: 15px;
+        margin-bottom: 18px;
+        color: #555;
+        font-size: 14px;
+    }}
+
+    .product-id {{
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 15px;
+    }}
+
+    .view-button {{
+        display: block;
+        text-align: center;
+        padding: 12px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+    }}
+
+    .view-button:hover {{
+        opacity: 0.9;
+    }}
+
+    @media (max-width: 600px) {{
+
+        body {{
+            padding: 15px;
+        }}
+
+        .header h1 {{
+            font-size: 26px;
+        }}
+
+    }}
+
+</style>
 
         </head>
 
