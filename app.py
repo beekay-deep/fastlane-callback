@@ -380,11 +380,13 @@ def imported_products():
             product_cards += f"""
             <div class="product-card">
 
-<img
-    class="product-image"
-    src="{image_url}"
-    alt="{title}"
-> 
+<a href="{image_url}" target="_blank">
+    <img
+        class="product-image"
+        src="{image_url}"
+        alt="{title}"
+    >
+</a>
 
                 <h2>{title}</h2>
 
