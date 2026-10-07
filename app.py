@@ -247,8 +247,8 @@ def product_test():
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
- ```python
- @app.route("/product-search")
+ 
+@app.route("/product-search")
 def product_search():
     try:
         keyword = request.args.get("keyword", "wall art")
