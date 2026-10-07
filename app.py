@@ -247,7 +247,87 @@ def product_test():
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
-   
+@app.route("/product-search")
+def product_search():
+    try:
+        keyword = request.args.get("keyword", "wall art")
+
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT access_token
+            FROM aliexpress_tokens
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if not row:
+            return "Product search: no access token found.", 500
+
+        access_token = row[0]
+
+        app_key = os.environ.get("ALIEXPRESS_APP_KEY")
+        app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
+
+        if not app_key or not app_secret:
+            return "Product search: AliExpress credentials are not configured.", 500
+
+        api_name = "aliexpress.ds.text.search"
+
+        timestamp = str(int(time.time() * 1000))
+
+        params = {
+            "app_key": app_key,
+            "access_token": access_token,
+            "method": api_name,
+            "keyWord": keyword,
+            "local": "en_US",
+            "countryCode": "ZA",
+            "sortBy": "orders,desc",
+            "pageSize": "20",
+            "pageIndex": "1",
+            "currency": "ZAR",
+            "sign_method": "sha256",
+            "timestamp": timestamp
+        }
+
+        sorted_keys = sorted(params.keys())
+
+        sign_string = ""
+
+        for key in sorted_keys:
+            sign_string += key + params[key]
+
+        digest = hmac.new(
+            app_secret.encode("utf-8"),
+            sign_string.encode("utf-8"),
+            hashlib.sha256
+        ).hexdigest().upper()
+
+        params["sign"] = digest
+
+        api_url = "https://api-sg.aliexpress.com/sync"
+
+        query_string = urllib.parse.urlencode(params)
+
+        request_url = api_url + "?" + query_string
+
+        with urllib.request.urlopen(request_url, timeout=30) as response:
+            response_body = response.read().decode("utf-8")
+
+        data = json.loads(response_body)
+
+        return "<pre>" + json.dumps(data, indent=2) + "</pre>"
+
+    except Exception as error:
+        print("Product search failed:", str(error))
+        return "Product search failed. Check Render logs.", 500   
 @app.route("/")
 def home():
     return "Fastlane callback server is running."
