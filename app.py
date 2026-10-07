@@ -88,6 +88,19 @@ def save_tokens(token_data):
         """)
 
         cursor.execute("""
+            CREATE TABLE IF NOT EXISTS imported_products (
+                id SERIAL PRIMARY KEY,
+                item_id TEXT UNIQUE NOT NULL,
+                title TEXT,
+                image_url TEXT,
+                price TEXT,
+                rating TEXT,
+                orders TEXT,
+                item_url TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        cursor.execute("""
             DELETE FROM aliexpress_tokens
         """)
 
@@ -247,7 +260,98 @@ def product_test():
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
- 
+ @app.route("/import-product", methods=["POST"])
+def import_product():
+    try:
+        item_id = request.form.get("item_id", "")
+        title = request.form.get("title", "")
+        image_url = request.form.get("image_url", "")
+        price = request.form.get("price", "")
+        rating = request.form.get("rating", "")
+        orders = request.form.get("orders", "")
+        item_url = request.form.get("item_url", "")
+
+        if not item_id:
+            return "Import failed: Product ID is missing.", 400
+
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS imported_products (
+                id SERIAL PRIMARY KEY,
+                item_id TEXT UNIQUE NOT NULL,
+                title TEXT,
+                image_url TEXT,
+                price TEXT,
+                rating TEXT,
+                orders TEXT,
+                item_url TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        cursor.execute("""
+            INSERT INTO imported_products (
+                item_id,
+                title,
+                image_url,
+                price,
+                rating,
+                orders,
+                item_url
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (item_id)
+            DO UPDATE SET
+                title = EXCLUDED.title,
+                image_url = EXCLUDED.image_url,
+                price = EXCLUDED.price,
+                rating = EXCLUDED.rating,
+                orders = EXCLUDED.orders,
+                item_url = EXCLUDED.item_url
+        """, (
+            item_id,
+            title,
+            image_url,
+            price,
+            rating,
+            orders,
+            item_url
+        ))
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return f"""
+        <h1>Product Imported Successfully</h1>
+
+        <p><strong>{title}</strong></p>
+
+        <p>Product ID: {item_id}</p>
+
+        <p>Fastlane has saved this product.</p>
+
+        <p>
+            <a href="/product-search">
+                Back to Product Search
+            </a>
+        </p>
+        """
+
+    except Exception as error:
+        print("Product import failed:", str(error))
+
+        return (
+            "Product import failed. Check Render logs.",
+            500
+        )
+
+
+@app.route("/product-search")
+def product_search():
 @app.route("/product-search")
 def product_search():
     try:
@@ -420,12 +524,63 @@ def product_search():
                             View on AliExpress
                         </a>
 
-                        <button
-                            class="import-button"
-                            onclick="alert('Product import will be added next.')"
-                        >
-                            Import Product
-                        </button>
+                         <form
+    method="POST"
+    action="/import-product"
+    style="flex: 1;"
+>
+
+    <input
+        type="hidden"
+        name="item_id"
+        value="{item_id}"
+    >
+
+    <input
+        type="hidden"
+        name="title"
+        value="{title}"
+    >
+
+    <input
+        type="hidden"
+        name="image_url"
+        value="{image}"
+    >
+
+    <input
+        type="hidden"
+        name="price"
+        value="{price}"
+    >
+
+    <input
+        type="hidden"
+        name="rating"
+        value="{rating}"
+    >
+
+    <input
+        type="hidden"
+        name="orders"
+        value="{orders}"
+    >
+
+    <input
+        type="hidden"
+        name="item_url"
+        value="{item_url}"
+    >
+
+    <button
+        type="submit"
+        class="import-button"
+        style="width: 100%;"
+    >
+        Import Product
+    </button>
+
+</form>
 
                     </div>
 
