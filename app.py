@@ -348,7 +348,7 @@ def import_product():
             "Product import failed. Check Render logs.",
             500
         )
- @app.route("/imported-products")
+@app.route("/imported-products")
 def imported_products():
     try:
         connection = get_database_connection()
