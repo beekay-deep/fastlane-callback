@@ -384,7 +384,7 @@ def imported_products():
 
                 <h2>{title}</h2>
 
-                <p>Price: R{price}</p>
+                <p>Price: {price}</p>
 
                 <p>Rating: {rating}</p>
 
