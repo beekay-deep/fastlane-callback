@@ -457,12 +457,13 @@ def imported_products():
     }}
 
     .product-image {{
-        width: 70%;
-        height: 120px;
+        width: 85%;
+        height: 150px;
         object-fit: contain;
         background: white;
         display: block;
         margin: 0 auto;
+    }}
     }}
 
     .product-info {{
