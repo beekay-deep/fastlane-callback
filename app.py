@@ -523,7 +523,39 @@ def imported_products():
         }}
 
     }}
+    .image-lightbox {{
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }}
 
+    .image-lightbox img {{
+        max-width: 95%;
+        max-height: 90%;
+        object-fit: contain;
+        background: white;
+        border-radius: 8px;
+    }}
+
+    .lightbox-close {{
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 1;
+    }}
 </style>
 
         </head>
