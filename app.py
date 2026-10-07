@@ -166,7 +166,7 @@ def api_test():
 
     except Exception as error:
         print("API test failed:", str(error))
-@app.route("/product-test")
+ @app.route("/product-test")
 def product_test():
     try:
         connection = get_database_connection()
@@ -197,12 +197,12 @@ def product_test():
 
         api_name = "aliexpress.ds.product.get"
 
-        timestamp = str(int(time.time() * 1000)) 
-        
+        timestamp = str(int(time.time() * 1000))
+
         print("AliExpress timestamp:", timestamp)
-        
+
         params = {
-            "app_key": app_key, 
+            "app_key": app_key,
             "access_token": access_token,
             "method": api_name,
             "product_id": "1005011756447612",
@@ -215,7 +215,7 @@ def product_test():
 
         sorted_keys = sorted(params.keys())
 
-        sign_string = api_name
+        sign_string = ""
 
         for key in sorted_keys:
             sign_string += key + params[key]
@@ -229,20 +229,20 @@ def product_test():
         params["sign"] = digest
 
         api_url = "https://api-sg.aliexpress.com/sync"
-        
-query_string = urllib.parse.urlencode(params)
 
-request = urllib.request.Request(
-    api_url + "?" + query_string,
-    method="GET"
-)
+        query_string = urllib.parse.urlencode(params)
 
-with urllib.request.urlopen(request, timeout=30) as response:
+        request = urllib.request.Request(
+            api_url + "?" + query_string,
+            method="GET"
+        )
+
+        with urllib.request.urlopen(request, timeout=30) as response:
             response_body = response.read().decode("utf-8")
 
-data = json.loads(response_body)
+        data = json.loads(response_body)
 
-return "<pre>" + json.dumps(data, indent=2) + "</pre>"
+        return "<pre>" + json.dumps(data, indent=2) + "</pre>"
 
     except Exception as error:
         print("Product API test failed:", str(error))
