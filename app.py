@@ -348,6 +348,46 @@ def import_product():
             "Product import failed. Check Render logs.",
             500
         )
+  @app.route("/delete-product", methods=["POST"])
+def delete_product():
+    try:
+        item_id = request.form.get("item_id", "")
+
+        if not item_id:
+            return "Delete failed: Product ID is missing.", 400
+
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "DELETE FROM imported_products WHERE item_id = %s",
+            (item_id,)
+        )
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return """
+        <h1>Product Deleted</h1>
+
+        <p>The product was removed from Fastlane.</p>
+
+        <p>
+            <a href="/imported-products">
+                Back to Imported Products
+            </a>
+        </p>
+        """
+
+    except Exception as error:
+        print("Product delete failed:", str(error))
+
+        return (
+            "Product delete failed. Check Render logs.",
+            500
+        )      
 @app.route("/imported-products")
 def imported_products():
     try:
@@ -405,6 +445,32 @@ def imported_products():
                     View on AliExpress
                 </a>
 
+<form
+    method="POST"
+    action="/delete-product"
+    style="margin-top: 10px;"
+>
+    <input
+        type="hidden"
+        name="item_id"
+        value="{item_id}"
+    >
+
+    <button
+        type="submit"
+        style="
+            width: 100%;
+            padding: 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        "
+    >
+        Delete Product
+    </button>
+</form>
             </div>
             """
 
