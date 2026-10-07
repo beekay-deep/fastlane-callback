@@ -348,6 +348,67 @@ def import_product():
             "Product import failed. Check Render logs.",
             500
         )
+@app.route("/imported-products")
+def imported_products():
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT
+                item_id,
+                title,
+                image_url,
+                price,
+                rating,
+                orders,
+                item_url
+            FROM imported_products
+            ORDER BY created_at DESC
+        """)
+
+        products = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        product_cards = ""
+
+        for product in products:
+            item_id, title, image_url, price, rating, orders, item_url = product
+
+            product_cards += f"""
+            <div class="product-card">
+
+                <img
+                    src="{image_url}"
+                    alt="{title}"
+                >
+
+                <h2>{title}</h2>
+
+                <p>Price: R{price}</p>
+
+                <p>Rating: {rating}</p>
+
+                <p>Orders: {orders}</p>
+
+                <p>Product ID: {item_id}</p>
+
+                <a
+                    href="{item_url}"
+                    target="_blank"
+                >
+                    View on AliExpress
+                </a>
+
+            </div>
+            """
+
+        if not product_cards:
+            product_cards = """
+            <p>No products have been imported yet.</p>
+            """
 
 
  
