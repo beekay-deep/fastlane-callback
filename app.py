@@ -348,7 +348,7 @@ def import_product():
             "Product import failed. Check Render logs.",
             500
         )
-@app.route("/imported-products")
+ @app.route("/imported-products")
 def imported_products():
     try:
         connection = get_database_connection()
@@ -380,10 +380,7 @@ def imported_products():
             product_cards += f"""
             <div class="product-card">
 
-                <img
-                    src="{image_url}"
-                    alt="{title}"
-                >
+                <img src="{image_url}" alt="{title}">
 
                 <h2>{title}</h2>
 
@@ -395,10 +392,7 @@ def imported_products():
 
                 <p>Product ID: {item_id}</p>
 
-                <a
-                    href="{item_url}"
-                    target="_blank"
-                >
+                <a href="{item_url}" target="_blank">
                     View on AliExpress
                 </a>
 
@@ -410,6 +404,87 @@ def imported_products():
             <p>No products have been imported yet.</p>
             """
 
+        return f"""
+        <!DOCTYPE html>
+        <html>
+
+        <head>
+
+            <title>Fastlane - Imported Products</title>
+
+            <style>
+
+                body {{
+                    font-family: Arial, sans-serif;
+                    background: #f5f5f5;
+                    padding: 30px;
+                }}
+
+                h1 {{
+                    margin-bottom: 30px;
+                }}
+
+                .products {{
+                    display: grid;
+                    grid-template-columns:
+                        repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 20px;
+                }}
+
+                .product-card {{
+                    background: white;
+                    padding: 20px;
+                    border-radius: 12px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }}
+
+                .product-card img {{
+                    width: 100%;
+                    height: 220px;
+                    object-fit: contain;
+                }}
+
+                .product-card h2 {{
+                    font-size: 18px;
+                }}
+
+                .product-card a {{
+                    display: inline-block;
+                    margin-top: 10px;
+                    padding: 10px 15px;
+                    background: #007bff;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 6px;
+                }}
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <h1>Fastlane - Imported Products</h1>
+
+            <div class="products">
+                {product_cards}
+            </div>
+
+        </body>
+
+        </html>
+        """
+
+    except Exception as error:
+        print("Imported products error:", str(error))
+
+        return (
+            "Could not load imported products. Check Render logs.",
+            500
+        )
+
+
+ 
 
  
 @app.route("/product-search")
