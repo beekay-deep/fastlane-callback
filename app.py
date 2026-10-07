@@ -248,7 +248,7 @@ def product_test():
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
  ```python
-@app.route("/product-search")
+ @app.route("/product-search")
 def product_search():
     try:
         keyword = request.args.get("keyword", "wall art")
@@ -339,19 +339,48 @@ def product_search():
 
         products_data = response_data.get("data", {})
         products = products_data.get("products", {})
-        product_list = products.get("selection_search_product", [])
+        product_list = products.get(
+            "selection_search_product",
+            []
+        )
 
         product_cards = ""
 
         for product in product_list:
+            title = product.get(
+                "title",
+                "No title available"
+            )
 
-            title = product.get("title", "No title available")
-            image = product.get("itemMainPic", "")
-            price = product.get("salePriceFormat", "Price unavailable")
-            rating = product.get("evaluateRate", "N/A")
-            orders = product.get("orders", "N/A")
-            item_url = product.get("itemUrl", "")
-            item_id = product.get("itemId", "")
+            image = product.get(
+                "itemMainPic",
+                ""
+            )
+
+            price = product.get(
+                "salePriceFormat",
+                "Price unavailable"
+            )
+
+            rating = product.get(
+                "evaluateRate",
+                "N/A"
+            )
+
+            orders = product.get(
+                "orders",
+                "N/A"
+            )
+
+            item_url = product.get(
+                "itemUrl",
+                ""
+            )
+
+            item_id = product.get(
+                "itemId",
+                ""
+            )
 
             if item_url.startswith("//"):
                 item_url = "https:" + item_url
@@ -414,8 +443,10 @@ def product_search():
 
             <title>Fastlane Product Search</title>
 
-            <meta name="viewport"
-                  content="width=device-width, initial-scale=1">
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1"
+            >
 
             <style>
 
@@ -575,8 +606,10 @@ def product_search():
 
                 <div class="search-box">
 
-                    <form method="GET"
-                          action="/product-search">
+                    <form
+                        method="GET"
+                        action="/product-search"
+                    >
 
                         <input
                             type="text"
@@ -612,7 +645,6 @@ def product_search():
         """
 
     except Exception as error:
-
         print(
             "Product search failed:",
             str(error)
@@ -622,7 +654,6 @@ def product_search():
             "Product search failed. Check Render logs.",
             500
         )
-```
 
 @app.route("/")
 def home():
