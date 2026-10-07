@@ -247,6 +247,7 @@ def product_test():
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
+ ```python
 @app.route("/product-search")
 def product_search():
     try:
@@ -315,7 +316,6 @@ def product_search():
         api_url = "https://api-sg.aliexpress.com/sync"
 
         query_string = urllib.parse.urlencode(params)
-
         request_url = api_url + "?" + query_string
 
         with urllib.request.urlopen(request_url, timeout=30) as response:
@@ -323,11 +323,307 @@ def product_search():
 
         data = json.loads(response_body)
 
-        return "<pre>" + json.dumps(data, indent=2) + "</pre>"
+        response_data = data.get(
+            "aliexpress_ds_text_search_response",
+            {}
+        )
+
+        response_code = response_data.get("code")
+
+        if response_code != "00":
+            return """
+            <h1>Fastlane Product Search Error</h1>
+            <p>AliExpress returned an error.</p>
+            <pre>{}</pre>
+            """.format(json.dumps(data, indent=2)), 500
+
+        products_data = response_data.get("data", {})
+        products = products_data.get("products", {})
+        product_list = products.get("selection_search_product", [])
+
+        product_cards = ""
+
+        for product in product_list:
+
+            title = product.get("title", "No title available")
+            image = product.get("itemMainPic", "")
+            price = product.get("salePriceFormat", "Price unavailable")
+            rating = product.get("evaluateRate", "N/A")
+            orders = product.get("orders", "N/A")
+            item_url = product.get("itemUrl", "")
+            item_id = product.get("itemId", "")
+
+            if item_url.startswith("//"):
+                item_url = "https:" + item_url
+
+            product_cards += f"""
+            <div class="product-card">
+
+                <img
+                    src="{image}"
+                    alt="{title}"
+                    class="product-image"
+                >
+
+                <div class="product-info">
+
+                    <h3>{title}</h3>
+
+                    <p class="rating">
+                        ⭐ {rating}% &nbsp; | &nbsp; 🛒 {orders} orders
+                    </p>
+
+                    <p class="price">
+                        {price}
+                    </p>
+
+                    <p class="product-id">
+                        Product ID: {item_id}
+                    </p>
+
+                    <div class="buttons">
+
+                        <a
+                            href="{item_url}"
+                            target="_blank"
+                            class="view-button"
+                        >
+                            View on AliExpress
+                        </a>
+
+                        <button
+                            class="import-button"
+                            onclick="alert('Product import will be added next.')"
+                        >
+                            Import Product
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            """
+
+        return f"""
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>Fastlane Product Search</title>
+
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1">
+
+            <style>
+
+                body {{
+                    margin: 0;
+                    font-family: Arial, sans-serif;
+                    background: #f5f7fb;
+                    color: #222;
+                }}
+
+                .header {{
+                    background: #111827;
+                    color: white;
+                    padding: 25px;
+                }}
+
+                .header h1 {{
+                    margin: 0;
+                }}
+
+                .container {{
+                    max-width: 1200px;
+                    margin: auto;
+                    padding: 25px;
+                }}
+
+                .search-box {{
+                    background: white;
+                    padding: 20px;
+                    border-radius: 12px;
+                    margin-bottom: 25px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                }}
+
+                .search-box form {{
+                    display: flex;
+                    gap: 10px;
+                }}
+
+                .search-box input {{
+                    flex: 1;
+                    padding: 14px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-size: 16px;
+                }}
+
+                .search-box button {{
+                    padding: 14px 22px;
+                    border: none;
+                    border-radius: 8px;
+                    background: #2563eb;
+                    color: white;
+                    font-size: 16px;
+                    cursor: pointer;
+                }}
+
+                .search-box button:hover {{
+                    background: #1d4ed8;
+                }}
+
+                .results {{
+                    display: grid;
+                    grid-template-columns:
+                        repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 20px;
+                }}
+
+                .product-card {{
+                    background: white;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                }}
+
+                .product-image {{
+                    width: 100%;
+                    height: 260px;
+                    object-fit: cover;
+                    background: #eee;
+                }}
+
+                .product-info {{
+                    padding: 18px;
+                }}
+
+                .product-info h3 {{
+                    font-size: 16px;
+                    line-height: 1.4;
+                    margin-top: 0;
+                }}
+
+                .rating {{
+                    color: #555;
+                    font-size: 14px;
+                }}
+
+                .price {{
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin: 12px 0;
+                }}
+
+                .product-id {{
+                    color: #888;
+                    font-size: 12px;
+                }}
+
+                .buttons {{
+                    display: flex;
+                    gap: 8px;
+                    margin-top: 15px;
+                }}
+
+                .view-button,
+                .import-button {{
+                    flex: 1;
+                    padding: 11px;
+                    border-radius: 7px;
+                    text-align: center;
+                    text-decoration: none;
+                    font-size: 13px;
+                    cursor: pointer;
+                }}
+
+                .view-button {{
+                    background: #e5e7eb;
+                    color: #111827;
+                }}
+
+                .import-button {{
+                    background: #2563eb;
+                    color: white;
+                    border: none;
+                }}
+
+                .view-button:hover {{
+                    background: #d1d5db;
+                }}
+
+                .import-button:hover {{
+                    background: #1d4ed8;
+                }}
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <div class="header">
+                <h1>Fastlane</h1>
+                <p>AliExpress Dropshipping Product Search</p>
+            </div>
+
+            <div class="container">
+
+                <div class="search-box">
+
+                    <form method="GET"
+                          action="/product-search">
+
+                        <input
+                            type="text"
+                            name="keyword"
+                            value="{keyword}"
+                            placeholder="Search AliExpress products..."
+                        >
+
+                        <button type="submit">
+                            Search
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <h2>
+                    Search results for:
+                    "{keyword}"
+                </h2>
+
+                <div class="results">
+
+                    {product_cards}
+
+                </div>
+
+            </div>
+
+        </body>
+
+        </html>
+        """
 
     except Exception as error:
-        print("Product search failed:", str(error))
-        return "Product search failed. Check Render logs.", 500   
+
+        print(
+            "Product search failed:",
+            str(error)
+        )
+
+        return (
+            "Product search failed. Check Render logs.",
+            500
+        )
+```
+
 @app.route("/")
 def home():
     return "Fastlane callback server is running."
