@@ -454,7 +454,7 @@ def imported_products():
 
     .product-image {{
         width: 100%;
-        height: 180px; 
+        height: 120px;  
         object-fit: contain;
         background: white;
     }}
