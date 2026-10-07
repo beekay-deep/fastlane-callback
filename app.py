@@ -587,7 +587,19 @@ def imported_products():
             <div class="products">
                 {product_cards}
             </div>
+<script>
 
+    function openImageLightbox(imageUrl) {{
+        document.getElementById("lightboxImage").src = imageUrl;
+        document.getElementById("imageLightbox").style.display = "flex";
+    }}
+
+    function closeImageLightbox() {{
+        document.getElementById("imageLightbox").style.display = "none";
+        document.getElementById("lightboxImage").src = "";
+    }}
+
+</script>
         </body>
 
         </html>
