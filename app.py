@@ -380,13 +380,16 @@ def imported_products():
             product_cards += f"""
             <div class="product-card">
 
-<a href="{image_url}" target="_blank">
+ <div
+    onclick="openImageLightbox('{image_url}')"
+    style="cursor: pointer;"
+>
     <img
         class="product-image"
         src="{image_url}"
         alt="{title}"
     >
-</a>
+</div>
 
                 <h2>{title}</h2>
 
