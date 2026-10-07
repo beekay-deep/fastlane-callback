@@ -560,8 +560,25 @@ def imported_products():
 
         </head>
 
-        <body>
+<body>
 
+    <div
+        id="imageLightbox"
+        class="image-lightbox"
+    >
+        <span
+            class="lightbox-close"
+            onclick="closeImageLightbox()"
+        >
+            &times;
+        </span>
+
+        <img
+            id="lightboxImage"
+            src=""
+            alt="Product image"
+        >
+    </div>
             <h1>Fastlane - Imported Products</h1>
 
             <div class="products">
