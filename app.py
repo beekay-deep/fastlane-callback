@@ -260,7 +260,7 @@ def product_test():
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
- @app.route("/import-product", methods=["POST"])
+@app.route("/import-product", methods=["POST"])
 def import_product():
     try:
         item_id = request.form.get("item_id", "")
@@ -350,8 +350,7 @@ def import_product():
         )
 
 
-@app.route("/product-search")
-def product_search():
+ 
 @app.route("/product-search")
 def product_search():
     try:
