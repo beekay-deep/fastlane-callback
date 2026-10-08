@@ -387,7 +387,135 @@ def delete_product():
         return (
             "Product delete failed. Check Render logs.",
             500
-        )      
+        )
+        @app.route("/dashboard")
+def dashboard():
+    return """
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+
+        <title>Fastlane Dashboard</title>
+
+        <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                background: #f4f6f8;
+                margin: 0;
+                padding: 30px;
+            }
+
+            .dashboard {
+                max-width: 1200px;
+                margin: auto;
+            }
+
+            h1 {
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                color: #666;
+                margin-bottom: 30px;
+            }
+
+            .menu {
+                display: grid;
+                grid-template-columns:
+                    repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .menu-card {
+                background: white;
+                padding: 25px;
+                border-radius: 14px;
+                box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            }
+
+            .menu-card h2 {
+                margin-top: 0;
+            }
+
+            .menu-card p {
+                color: #666;
+            }
+
+            .menu-button {
+                display: block;
+                margin-top: 20px;
+                padding: 12px;
+                background: #007bff;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 8px;
+            }
+
+            .menu-button:hover {
+                opacity: 0.9;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="dashboard">
+
+            <h1>Fastlane Dashboard</h1>
+
+            <p class="subtitle">
+                Manage your AliExpress dropshipping business.
+            </p>
+
+            <div class="menu">
+
+                <div class="menu-card">
+
+                    <h2>Product Search</h2>
+
+                    <p>
+                        Search for products on AliExpress.
+                    </p>
+
+                    <a
+                        href="/product-search"
+                        class="menu-button"
+                    >
+                        Search Products
+                    </a>
+
+                </div>
+
+                <div class="menu-card">
+
+                    <h2>Imported Products</h2>
+
+                    <p>
+                        View and manage your imported products.
+                    </p>
+
+                    <a
+                        href="/imported-products"
+                        class="menu-button"
+                    >
+                        View Products
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+
+    </html>
+    """
 @app.route("/imported-products")
 def imported_products():
     try:
