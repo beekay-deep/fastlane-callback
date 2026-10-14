@@ -390,7 +390,21 @@ def delete_product():
         )
 @app.route("/dashboard")
 def dashboard():
-    return """
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT COUNT(*) FROM imported_products")
+        total_products = cursor.fetchone()[0]
+
+        cursor.close()
+        connection.close()
+
+    except Exception as error:
+        print("Dashboard database error:", str(error))
+        total_products = 0
+
+    return f"""
     <!DOCTYPE html>
     <html>
 
@@ -466,11 +480,23 @@ def dashboard():
 
         <div class="dashboard">
 
-            <h1>Fastlane Dashboard</h1>
+             <h1>Fastlane Dashboard</h1>
 
-            <p class="subtitle">
-                Manage your AliExpress dropshipping business.
-            </p>
+<p class="subtitle">
+    Manage your AliExpress dropshipping business.
+</p>
+
+<div class="menu-card" style="margin-bottom: 20px;">
+
+    <h2>Total Imported Products</h2>
+
+    <p style="font-size: 32px; font-weight: bold; color: #007bff;">
+        {total_products}
+    </p>
+
+    <p>Products currently saved in Fastlane.</p>
+
+</div>
 
             <div class="menu">
 
