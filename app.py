@@ -388,7 +388,7 @@ def delete_product():
             "Product delete failed. Check Render logs.",
             500
         )
-        @app.route("/dashboard")
+@app.route("/dashboard")
 def dashboard():
     return """
     <!DOCTYPE html>
