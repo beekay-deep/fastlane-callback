@@ -325,7 +325,7 @@ def import_product():
         cursor.close()
         connection.close()
 
-        return f"""
+        @app.route("/dashboard")
         <h1>Product Imported Successfully</h1>
 
         <p><strong>{title}</strong></p>
