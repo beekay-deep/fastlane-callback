@@ -404,7 +404,7 @@ def dashboard():
         print("Dashboard database error:", str(error))
         total_products = 0
 
-    return f"""
+    dashboard_html = """
     <!DOCTYPE html>
     <html>
 
@@ -491,7 +491,7 @@ def dashboard():
     <h2>Total Imported Products</h2>
 
     <p style="font-size: 32px; font-weight: bold; color: #007bff;">
-        {total_products}
+        TOTAL_PRODUCTS_PLACEHOLDER 
     </p>
 
     <p>Products currently saved in Fastlane.</p>
@@ -542,6 +542,7 @@ def dashboard():
 
     </html>
     """
+    return dashboard_html.replace("TOTAL_PRODUCTS_PLACEHOLDER", str(total_products))
     
 @app.route("/imported-products")
 def imported_products():
@@ -1075,7 +1076,7 @@ def product_search():
             </div>
             """
 
-        return f"""
+        dashboard_html = """
         <!DOCTYPE html>
 
         <html>
