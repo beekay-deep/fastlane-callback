@@ -633,8 +633,8 @@ def imported_products():
             product_cards = """
             <p>No products have been imported yet.</p>
             """
-
-        return f"""
+ 
+        return """
         <!DOCTYPE html>
         <html>
 
