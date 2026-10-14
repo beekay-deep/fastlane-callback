@@ -260,6 +260,7 @@ def product_test():
     except Exception as error:
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
+ 
 @app.route("/import-product", methods=["POST"])
 def import_product():
     try:
@@ -275,80 +276,68 @@ def import_product():
             return "Import failed: Product ID is missing.", 400
 
         connection = get_database_connection()
-        cursor = connection.cursor()
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS imported_products (
-                id SERIAL PRIMARY KEY,
-                item_id TEXT UNIQUE NOT NULL,
-                title TEXT,
-                image_url TEXT,
-                price TEXT,
-                rating TEXT,
-                orders TEXT,
-                item_url TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
+        try:
+            cursor = connection.cursor()
 
-        cursor.execute("""
-            INSERT INTO imported_products (
-                item_id,
-                title,
-                image_url,
-                price,
-                rating,
-                orders,
-                item_url
-            )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (item_id)
-            DO UPDATE SET
-                title = EXCLUDED.title,
-                image_url = EXCLUDED.image_url,
-                price = EXCLUDED.price,
-                rating = EXCLUDED.rating,
-                orders = EXCLUDED.orders,
-                item_url = EXCLUDED.item_url
-        """, (
-            item_id,
-            title,
-            image_url,
-            price,
-            rating,
-            orders,
-            item_url
-        ))
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS imported_products (
+                    id SERIAL PRIMARY KEY,
+                    item_id TEXT UNIQUE NOT NULL,
+                    title TEXT,
+                    image_url TEXT,
+                    price TEXT,
+                    rating TEXT,
+                    orders TEXT,
+                    item_url TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
 
-        connection.commit()
+            cursor.execute("""
+                INSERT INTO imported_products (
+                    item_id, title, image_url, price,
+                    rating, orders, item_url
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (item_id)
+                DO UPDATE SET
+                    title = EXCLUDED.title,
+                    image_url = EXCLUDED.image_url,
+                    price = EXCLUDED.price,
+                    rating = EXCLUDED.rating,
+                    orders = EXCLUDED.orders,
+                    item_url = EXCLUDED.item_url
+            """, (
+                item_id, title, image_url, price,
+                rating, orders, item_url
+            ))
 
-        cursor.close()
-        connection.close()
+            connection.commit()
 
-        @app.route("/dashboard")
-        <h1>Product Imported Successfully</h1>
+        finally:
+            connection.close()
 
-        <p><strong>{title}</strong></p>
-
-        <p>Product ID: {item_id}</p>
-
-        <p>Fastlane has saved this product.</p>
-
-        <p>
-            <a href="/product-search">
-                Back to Product Search
-            </a>
-        </p>
+        return f"""
+        <!DOCTYPE html>
+        <html>
+        <head><title>Fastlane - Product Imported</title></head>
+        <body>
+            <h1>Product Imported Successfully</h1>
+            <p><strong>{title}</strong></p>
+            <p>Product ID: {item_id}</p>
+            <p>Fastlane has saved this product.</p>
+            <p><a href="/product-search">Back to Product Search</a></p>
+            <p><a href="/imported-products">View Imported Products</a></p>
+            <p><a href="/dashboard">Back to Dashboard</a></p>
+        </body>
+        </html>
         """
 
     except Exception as error:
         print("Product import failed:", str(error))
+        return "Product import failed. Check Render logs.", 500
 
-        return (
-            "Product import failed. Check Render logs.",
-            500
-        )
-@app.route("/delete-product", methods=["POST"])
 def delete_product():
     try:
         item_id = request.form.get("item_id", "")
