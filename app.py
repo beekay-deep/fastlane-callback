@@ -695,7 +695,7 @@ def imported_products():
         padding: 4px 0;
     }}
 
-    .product-info h2 {
+    .product-info h2 {{
         font-size: 12px;
         font-weight: 400;
         line-height: 1.4;
