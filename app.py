@@ -1187,7 +1187,7 @@ def product_search():
                 }}
 
                 .product-info h3 {{
-                    font-size: 13px;
+                    font-size: 12px;
                     font-weight: 400;
                     line-height: 1.4;
                     margin: 0 0 8px 0;
