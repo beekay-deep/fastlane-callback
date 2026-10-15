@@ -482,8 +482,9 @@ def dashboard():
     </div>
 </div>
 
-<h2 class="page-title">Dashboard</h2>
-
+<div class="brand">
+    <img src="/static/fastlane-logo.png" alt="Fastlane logo" style="width: 260px; max-width: 100%; height: auto;">
+</div>
 <p class="subtitle">
     Manage your AliExpress dropshipping business.
 </p>
