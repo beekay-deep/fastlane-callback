@@ -685,7 +685,7 @@ def imported_products():
         display: block;
         margin: 0 auto;
     }}
-    }}
+    
 
     .product-info {{
         padding: 20px;
@@ -819,7 +819,7 @@ def imported_products():
         </body>
 
         </html>
-        """
+        """.format(product_cards=product_cards)
 
     except Exception as error:
         print("Imported products error:", str(error))
