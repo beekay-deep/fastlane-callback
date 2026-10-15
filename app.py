@@ -474,7 +474,15 @@ def dashboard():
 
         <div class="dashboard">
 
-             <h1>Fastlane Dashboard</h1>
+             <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+        <h1>FASTLANE</h1>
+        <p class="brand-tagline">Discover. Import. Sell.</p>
+    </div>
+</div>
+
+<h2 class="page-title">Dashboard</h2>
 
 <p class="subtitle">
     Manage your AliExpress dropshipping business.
