@@ -522,7 +522,11 @@ def dashboard():
 
                 <div class="menu-card">
 
-                    <h2>Imported Products</h2>
+<div class="brand">
+    <img src="/static/fastlane-logo.png" alt="Fastlane logo" style="width: 260px; max-width: 100%; height: auto;">
+</div>
+
+<h2>Imported Products</h2>
 
                     <p>
                         View and manage your imported products.
