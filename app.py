@@ -1186,7 +1186,7 @@ def product_search():
                     font-weight: normal;
                 }}
 
-                .product-info h3 {{
+                .product-info h2 {{
                     font-size: 12px;
                     font-weight: 400;
                     line-height: 1.4;
