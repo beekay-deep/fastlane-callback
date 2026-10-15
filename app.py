@@ -1151,19 +1151,28 @@ def product_search():
                     gap: 20px;
                 }}
 
+                
                 .product-card {{
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 20px;
                     background: white;
                     border-radius: 12px;
                     overflow: hidden;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                    padding: 16px;
+                    margin-bottom: 20px;
                 }}
 
                 .product-image {{
-                    width: 100%;
-                    height: 260px;
-                    object-fit: cover;
-                    background: #eee;
+                    width: 180px;
+                    height: 180px;
+                    flex-shrink: 0;
+                    object-fit: contain;
+                    background: #f7f7f7;
+                    border-radius: 8px;
                 }}
+
 
                 .product-info {{
                     padding: 18px;
