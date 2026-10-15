@@ -696,9 +696,11 @@ def imported_products():
     }}
 
     .product-title {{
-        font-size: 18px;
+        font-size: 12px;
+        font-weight: 400;
         line-height: 1.4;
-        margin: 0 0 15px 0;
+        margin: 0 0 8px 0;
+        overflow-wrap: anywhere;
     }}
 
     .price {{
