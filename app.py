@@ -1174,46 +1174,54 @@ def product_search():
                 }}
 
 
+        
                 .product-info {{
-                    padding: 18px;
+                    padding: 8px;
+                    flex: 1;
+                    min-width: 0;
+                    font-weight: normal;
                 }}
 
                 .product-info h3 {{
                     font-size: 16px;
+                    font-weight: 500;
                     line-height: 1.4;
-                    margin-top: 0;
+                    margin: 0 0 10px 0;
                 }}
 
                 .rating {{
-                    color: #555;
-                    font-size: 14px;
+                    color: #666;
+                    font-size: 13px;
+                    font-weight: normal;
                 }}
 
                 .price {{
-                    font-size: 24px;
-                    font-weight: bold;
-                    margin: 12px 0;
+                    font-size: 20px;
+                    font-weight: 600;
+                    margin: 10px 0;
                 }}
 
                 .product-id {{
                     color: #888;
                     font-size: 12px;
+                    font-weight: normal;
                 }}
 
                 .buttons {{
                     display: flex;
                     gap: 8px;
-                    margin-top: 15px;
+                    margin-top: 12px;
                 }}
 
                 .view-button,
                 .import-button {{
                     flex: 1;
-                    padding: 11px;
+                    padding: 10px;
                     border-radius: 7px;
                     text-align: center;
                     text-decoration: none;
                     font-size: 13px;
+                    font-weight: normal;
                     cursor: pointer;
                 }}
 
@@ -1235,6 +1243,7 @@ def product_search():
                 .import-button:hover {{
                     background: #1d4ed8;
                 }}
+
 
             </style>
 
