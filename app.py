@@ -334,6 +334,11 @@ def import_product():
         </html>
         """
 
+        return dashboard_html.format(
+            keyword=keyword,
+            product_cards=product_cards
+        )
+        
     except Exception as error:
         print("Product import failed:", str(error))
         return "Product import failed. Check Render logs.", 500
