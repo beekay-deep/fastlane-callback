@@ -581,7 +581,7 @@ def imported_products():
     >
 </div>
 
-                <h2>{title}</h2>
+                <h2 style="font-size: 12px; font-weight: 400; line-height: 1.4; margin: 0 0 8px 0; overflow-wrap: anywhere;">{title}</h2>
 
                 <p>Price: {price}</p>
 
