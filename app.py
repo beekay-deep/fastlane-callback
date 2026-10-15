@@ -661,34 +661,38 @@ def imported_products():
         margin-top: 8px;
     }}
 
-    .products {{
+         .products {{
         max-width: 1200px;
         margin: auto;
-        display: grid;
-        grid-template-columns:
-            repeat(auto-fit, minmax(280px, 1fr));
-        gap: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
     }}
 
     .product-card {{
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
         background: white;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }}
 
     .product-image {{
-        width: 100%;
-        height: 280px;
+        width: 150px;
+        height: 150px;
         object-fit: contain;
         background: white;
         display: block;
-        margin: 0 auto;
+        flex-shrink: 0;
+        margin: 0;
     }}
-    
 
     .product-info {{
-        padding: 20px;
+        flex: 1;
+        min-width: 0;
+        padding: 4px 0;
     }}
 
     .product-title {{
@@ -1183,8 +1187,8 @@ def product_search():
                 }}
 
                 .product-info h3 {{
-                    font-size: 16px;
-                    font-weight: 500;
+                    font-size: 15px;
+                    font-weight: 400;
                     line-height: 1.4;
                     margin: 0 0 10px 0;
                 }}
@@ -1196,8 +1200,8 @@ def product_search():
                 }}
 
                 .price {{
-                    font-size: 20px;
-                    font-weight: 600;
+                    font-size: 18px;
+                    font-weight: 500;
                     margin: 10px 0;
                 }}
 
