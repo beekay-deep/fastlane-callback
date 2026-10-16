@@ -817,11 +817,15 @@ def imported_products():
             alt="Product image"
         >
     </div>
-            <h1>Fastlane - Imported Products</h1>
+<div class="brand" style="margin-bottom: 20px;">
+    <img src="/static/fastlane-logo.png" alt="Fastlane logo" style="width: 260px; max-width: 100%; height: auto;">
+</div>
 
-            <div class="products">
-                {product_cards}
-            </div>
+<h1>Imported Products</h1>
+
+<div class="products">
+    {product_cards}
+</div>
 <script>
 
     function openImageLightbox(imageUrl) {{
