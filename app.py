@@ -1296,9 +1296,9 @@ def product_search():
         flex-direction: column;
    }}
 
-    .view-button,
-    .import-button {{
-        width: 100%;
+   .view-button,
+      .import-button {{
+       width: auto;
    }}
 }
                 .view-button:hover {{
