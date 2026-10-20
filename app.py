@@ -408,50 +408,50 @@ def dashboard():
 
         <style>
 
-            body {
+            body {{
                 font-family: Arial, sans-serif;
                 background: #f4f6f8;
                 margin: 0;
                 padding: 30px;
-            }
+           }}
 
-            .dashboard {
+            .dashboard {{
                 max-width: 1200px;
                 margin: auto;
-            }
+           }}
 
-            h1 {
+            h1 {{
                 margin-bottom: 10px;
-            }
+           }}
 
-            .subtitle {
+            .subtitle {{
                 color: #666;
                 margin-bottom: 30px;
-            }
+           }}
 
-            .menu {
+            .menu {{
                 display: grid;
                 grid-template-columns:
                     repeat(auto-fit, minmax(250px, 1fr));
                 gap: 20px;
-            }
+           }}
 
-            .menu-card {
+            .menu-card {{
                 background: white;
                 padding: 25px;
                 border-radius: 14px;
                 box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-            }
+           }}
 
-            .menu-card h2 {
+            .menu-card h2 {{
                 margin-top: 0;
-            }
+           }}
 
-            .menu-card p {
+            .menu-card p {{
                 color: #666;
-            }
+           }}
 
-            .menu-button {
+            .menu-button {{
                 display: block;
                 margin-top: 20px;
                 padding: 12px;
@@ -460,11 +460,11 @@ def dashboard():
                 text-align: center;
                 text-decoration: none;
                 border-radius: 8px;
-            }
+           }}
 
-            .menu-button:hover {
+            .menu-button:hover {{
                 opacity: 0.9;
-            }
+           }}
 
         </style>
 
