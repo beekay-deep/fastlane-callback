@@ -1166,13 +1166,13 @@ def product_search():
                 .search-box button:hover {{ 
                 }}
 
-             .results {
+.results {{
     display: flex;
     flex-direction: column;
     gap: 18px;
-}
+}}
 
-.product-card {
+.product-card {{
     display: grid;
     grid-template-columns: 180px minmax(0, 1fr);
     align-items: start;
@@ -1181,63 +1181,64 @@ def product_search():
     border-radius: 14px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+}}
 
-.product-image {
+
+.product-image {{
     width: 180px;
     height: 180px;
     object-fit: contain;
     background: #f7f7f7;
     border-radius: 10px;
     display: block;
-}
+}}
 
-.product-info {
+.product-info {{
     min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
     padding: 0;
-}
+}}
 
-.product-info h3 {
+.product-info h3 {{
     font-size: 17px;
     font-weight: 500;
     line-height: 1.5;
     margin: 0;
     overflow-wrap: anywhere;
-}
+}}
 
-.rating {
+.rating {{
     color: #666;
     font-size: 14px;
     margin: 0;
-}
+}}
 
-.price {
+.price {{
     font-size: 22px;
     font-weight: 700;
     color: #111827;
     margin: 0;
-}
+}}
 
-.product-id {
+.product-id {{
     color: #888;
     font-size: 12px;
     overflow-wrap: anywhere;
     margin: 0;
-}
+}}
 
-.buttons {
+.buttons {{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 8px;
-}
+}}
 
 .view-button,
-.import-button {
+.import-button {{
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
@@ -1250,18 +1251,18 @@ def product_search():
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-}
+}}
 
-.view-button {
+.view-button {{
     background: #e5e7eb;
     color: #111827;
-}
+}}
 
-.import-button {
+.import-button {{
     background: #2563eb;
     color: white;
     border: none;
-}
+}}
 
 .view-button:hover {
     background: #d1d5db;
