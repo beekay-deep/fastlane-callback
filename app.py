@@ -1264,42 +1264,42 @@ def product_search():
     border: none;
 }}
 
-.view-button:hover {
+.view-button:hover {{
     background: #d1d5db;
-}
+}}
 
-.import-button:hover {
+.import-button:hover {{
     background: #1d4ed8;
-}
+}}
 
-@media (max-width: 600px) {
-    .container {
+@media (max-width: 600px) {{
+    .container {{
         padding: 15px;
-    }
+   }}
 
-    .product-card {
+    .product-card {{
         grid-template-columns: 1fr;
         gap: 16px;
         padding: 16px;
-    }
+   }}
 
-    .product-image {
+    .product-image {{
         width: 100%;
         height: 220px;
-    }
+   }}
 
-    .product-info h3 {
+    .product-info h3 {{
         font-size: 16px;
-    }
+   }}
 
-    .buttons {
+    .buttons {{
         flex-direction: column;
-    }
+   }}
 
     .view-button,
-    .import-button {
+    .import-button {{
         width: 100%;
-    }
+   }}
 }
                 .view-button:hover {{
                     background: #d1d5db;
