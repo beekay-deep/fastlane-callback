@@ -1363,10 +1363,11 @@ def product_search():
         </html>
         """
         
-        return dashboard_html.format(
-            keyword=keyword,
-            product_cards=product_cards
-        )
+return dashboard_html.replace(
+    "{keyword}", keyword
+).replace(
+    "{product_cards}", product_cards
+)
         
     except Exception as error:
         print(
