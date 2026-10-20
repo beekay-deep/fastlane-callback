@@ -1079,7 +1079,7 @@ def product_search():
     <button
         type="submit"
         class="import-button"
-        style="width: 100%;"
+        style="width: auto;" 
     >
         Import Product
     </button>
