@@ -692,7 +692,7 @@ def imported_products():
         box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }}
 
-    .product-image {{
+    .product-image {
         width: 100px;
         height: 100px;
         object-fit: contain;
@@ -700,7 +700,7 @@ def imported_products():
         display: block;
         flex-shrink: 0;
         margin: 0;
-    }}
+     }
 
     .product-info {{
         flex: 1;
