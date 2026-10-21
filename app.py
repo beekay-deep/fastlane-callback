@@ -993,8 +993,8 @@ def product_search():
             if item_url.startswith("//"):
                 item_url = "https:" + item_url
 
-product_cards += f"""
-    <div class="product-card">
+            product_cards += f"""
+                <div class="product-card">
 
         <img
             class="product-image"
