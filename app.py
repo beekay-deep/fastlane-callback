@@ -1280,9 +1280,9 @@ def product_search():
     background: #1d4ed8;
 }}
 .fastlane-logo {
-    width: 130px !important;
+    width: 200px !important;
     height: auto !important;
-    max-width: 130px !important;
+    max-width: 200px !important;
     display: block;
     margin: 0 auto 10px;
 }
