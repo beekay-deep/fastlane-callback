@@ -1126,6 +1126,7 @@ def product_search():
                     background: #111827;
                     color: white;
                     padding: 25px;
+                    text-align: center;
                 }}
 
                 .header h1 {{
