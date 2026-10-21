@@ -693,10 +693,8 @@ def imported_products():
     }}
 
     .product-image {
-        width: 350px !important;
-        height: 350px !important;
-        max-width: 350px !important;
-        max-height: 350px !important;
+        width: 80px
+        height: 80px
         object-fit: contain;
         background: white;
         display: block;
