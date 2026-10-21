@@ -795,7 +795,7 @@ def imported_products():
         line-height: 1;
     }}
     .fastlane-logo {{
-        width: 160px;
+        width: 90px;
         height: auto;
         display: block;
         margin: 0 auto 10px;
