@@ -1185,8 +1185,8 @@ def product_search():
 
 
 .product-image {{
-    width: 180px;
-    height: 180px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
     background: #f7f7f7;
     border-radius: 10px;
