@@ -794,6 +794,12 @@ def imported_products():
         cursor: pointer;
         line-height: 1;
     }}
+    .fastlane-logo {{
+        width: 160px;
+        height: auto;
+        display: block;
+        margin: 0 auto 10px;
+    }}
 </style>
 
         </head>
@@ -1316,14 +1322,18 @@ def product_search():
 
         </head>
 
-        <body>
+<body>
 
-            <div class="header">
-                <h1>Fastlane</h1>
-                <p>AliExpress Dropshipping Product Search</p>
-            </div>
+    <div class="header">
+        <img
+            src="/static/fastlane-logo.png"
+            alt="Fastlane Logo"
+            class="fastlane-logo"
+        >
+        <p>AliExpress Dropshipping Product Search</p>
+    </div>
 
-            <div class="container">
+    <div class="container">
 
                 <div class="search-box">
 
