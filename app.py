@@ -1184,7 +1184,7 @@ def product_search():
 }}
 
 
-.product-image {{
+.product-image {
     width: 180px !important;
     height: 180px !important;
     max-width: 180px !important;
@@ -1193,7 +1193,7 @@ def product_search():
     background: #f7f7f7;
     border-radius: 10px;
     display: block;
-}}
+ }
 
 .product-info {{
     min-width: 0;
