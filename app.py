@@ -1279,7 +1279,13 @@ def product_search():
 .import-button:hover {{
     background: #1d4ed8;
 }}
-
+.fastlane-logo {
+    width: 90px !important;
+    height: auto !important;
+    max-width: 90px !important;
+    display: block;
+    margin: 0 auto 10px;
+}
 @media (max-width: 600px) {{
     .container {{
         padding: 15px;
