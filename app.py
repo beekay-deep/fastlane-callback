@@ -1185,10 +1185,10 @@ def product_search():
 
 
 .product-image {{
-    width: 350px !important;
-    height: 350px !important;
-    max-width: 350px !important;
-    max-height: 350px !important; 
+    width: 180px !important;
+    height: 180px !important;
+    max-width: 180px !important;
+    max-height: 180px !important; 
     object-fit: contain;
     background: #f7f7f7;
     border-radius: 10px;
