@@ -1317,13 +1317,13 @@ def product_search():
                     background: #1d4ed8;
                 }}
 
-                .fastlane-logo {{
+                .fastlane-logo {
                     width: 90px !important;
                     height: auto !important;
                     max-width: 90px !important;
                     display: block;
                     margin: 0 auto 10px;
-                }}
+                 }
             </style>
 
         </head>
