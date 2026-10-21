@@ -1174,9 +1174,9 @@ def product_search():
 
 .product-card {{
     display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-columns: 100px minmax(0, 1fr);
     align-items: start;
-    gap: 24px;
+    gap: 12px;
     background: white;
     border-radius: 14px;
     padding: 20px;
