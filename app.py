@@ -693,8 +693,8 @@ def imported_products():
     }}
 
     .product-image {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         object-fit: contain;
         background: white;
         display: block;
@@ -993,16 +993,16 @@ def product_search():
             if item_url.startswith("//"):
                 item_url = "https:" + item_url
 
-            product_cards += f"""
-            <div class="product-card">
+product_cards += f"""
+    <div class="product-card">
 
-                <img
-                    src="{image}"
-                    alt="{title}"
-                    class="product-image"
-                >
+        <img
+            class="product-image"
+            src="{image}"
+            alt="{title}"
+        >
 
-                <div class="product-info">
+        <div class="product-info">
 
                     <h3>{title}</h3>
 
