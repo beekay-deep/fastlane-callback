@@ -1134,7 +1134,7 @@ def product_search():
                 }}
 
                 .container {{
-                    max-width: 1200px;
+                    max-width: 100%;
                     margin: auto;
                     padding: 25px;
                 }}
@@ -1292,12 +1292,12 @@ def product_search():
         padding: 15px;
    }}
 
-    .product-card {{
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 16px;
-   }}
+    <h2>
+                    Search results for:
+                    "{keyword}"
+                </h2>
 
+                <div class="results"
     .product-image {{
         width: 100%;
         height: 220px;
