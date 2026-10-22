@@ -1115,52 +1115,52 @@ def product_search():
 
             <style>
 
-                body {{
+                body {
                     margin: 0;
                     font-family: Arial, sans-serif;
                     background: #f5f7fb;
                     color: #222;
-                }}
+                 }
 
-                .header {{
+                .header {
                     background: #111827;
                     color: white;
                     padding: 25px;
                     text-align: center;
-                }}
+                 }
 
-                .header h1 {{
+                .header h1 {
                     margin: 0;
-                }}
+                 }
 
-                .container {{
+                .container {
                     max-width: 100%;
                     margin: auto;
                     padding: 25px;
-                }}
+                 }
 
-                .search-box {{
+                .search-box {
                     background: white;
                     padding: 20px;
                     border-radius: 12px;
                     margin-bottom: 25px;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-                }}
+                 }
 
-                .search-box form {{
+                .search-box form {
                     display: flex;
                     gap: 10px;
-                }}
+                 }
 
-                .search-box input {{
+                .search-box input {
                     flex: 1;
                     padding: 14px;
                     border: 1px solid #ddd;
                     border-radius: 8px;
                     font-size: 16px;
-                }}
+                 }
 
-                .search-box button {{
+                .search-box button {
                     padding: 14px 22px;
                     border: none;
                     border-radius: 8px;
@@ -1168,18 +1168,18 @@ def product_search():
                     color: white;
                     font-size: 16px;
                     cursor: pointer;
-                }}
+                 }
 
-                .search-box button:hover {{ 
-                }}
+                .search-box button:hover { 
+                 }
 
-.results {{
+.results {
     display: flex;
     flex-direction: column;
     gap: 18px;
-}}
+ }
 
-.product-card {{
+.product-card {
     display: grid;
     width: 100%;
     grid-template-columns: 350px minmax(0, 1fr);
@@ -1189,7 +1189,7 @@ def product_search():
     border-radius: 14px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}}
+ }
 
 
 .product-image {
