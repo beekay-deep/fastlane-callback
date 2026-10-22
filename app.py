@@ -1284,8 +1284,8 @@ def product_search():
     width: 250px !important;
     height: auto !important;
     max-width: 250px !important;
-    display: block;
-    margin: 0 auto 10px;
+    display: block; 
+    margin: 0 0 10px; 
 }
 @media (max-width: 600px) {{
     .container {{
