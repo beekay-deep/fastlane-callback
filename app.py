@@ -1181,6 +1181,7 @@ def product_search():
 
 .product-card {{
     display: grid;
+    width: 100%;
     grid-template-columns: 350px minmax(0, 1fr);
     align-items: start;
     gap: 12px;
