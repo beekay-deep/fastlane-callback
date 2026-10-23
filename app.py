@@ -399,7 +399,7 @@ def dashboard():
         print("Dashboard database error:", str(error))
         total_products = 0
 
-    dashboard_html = """.
+    dashboard_html = """
             .dashboard {{
                 max-width: 1200px;
                 margin: auto;
