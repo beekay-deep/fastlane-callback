@@ -398,23 +398,7 @@ def dashboard():
         print("Dashboard database error:", str(error))
         total_products = 0
 
-    dashboard_html = """
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-
-        <title>Fastlane Dashboard</title>
-
-        <style>
-
-            body {{
-                font-family: Arial, sans-serif;
-                background: #f4f6f8;
-                margin: 0;
-                padding: 30px;
-           }}
-
+    dashboard_html = """.
             .dashboard {{
                 max-width: 1200px;
                 margin: auto;
@@ -692,15 +676,15 @@ def imported_products():
         box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }}
 
-    .product-image {
-        width: 80px
-        height: 80px
+        .product-image {{
+        width: 80px;
+        height: 80px;
         object-fit: contain;
         background: white;
         display: block;
         flex-shrink: 0;
         margin: 0;
-     }
+    }} 
 
     .product-info {{
         flex: 1;
