@@ -677,8 +677,8 @@ def imported_products():
     }}
 
         .product-image {{
-        width: 80px;
-        height: 80px;
+        width: 180px;
+        height: 180px;
         object-fit: contain;
         background: white;
         display: block;
