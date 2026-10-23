@@ -343,6 +343,7 @@ def import_product():
         print("Product import failed:", str(error))
         return "Product import failed. Check Render logs.", 500
 
+@app.route("/delete-product", methods=["POST"])
 def delete_product():
     try:
         item_id = request.form.get("item_id", "")
