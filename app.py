@@ -520,9 +520,7 @@ def dashboard():
 
                 <div class="menu-card">
 
-<div class="brand">
-    <img src="/static/fastlane-logo.png" alt="Fastlane logo" style="width: 260px; max-width: 100%; height: auto;">
-</div>
+ 
 
 <h2>Imported Products</h2>
 
