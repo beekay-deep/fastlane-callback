@@ -454,6 +454,25 @@ def prepare_listing():
     <h3>Selling Price Calculator</h3>
 
     <label for="selling-price">Your selling price (R):</label>
+    
+<input
+    type="number"
+    id="shipping-cost"
+    min="0"
+    step="0.01"
+    placeholder="Shipping cost (R)"
+    style="width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box;"
+>
+
+<input
+    type="number"
+    id="other-fees"
+    min="0"
+    step="0.01"
+    placeholder="Other fees (R)"
+    style="width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box;"
+>
+
     <input
         type="number"
         id="selling-price"
@@ -469,26 +488,36 @@ def prepare_listing():
     </p>
 </div>
 
+
+
 <script>
     const sellingPriceInput = document.getElementById("selling-price");
+    const shippingCostInput = document.getElementById("shipping-cost");
+    const otherFeesInput = document.getElementById("other-fees");
     const profitDisplay = document.getElementById("estimated-profit");
-    const productCost = Number("{price}"); 
+    const productCost = Number("{price}");
 
-    sellingPriceInput.addEventListener("input", function () {{
-        const sellingPrice = parseFloat(this.value);
+    function calculateProfit() {{
+        const sellingPrice = parseFloat(sellingPriceInput.value);
 
-        if (this.value === "" || !Number.isFinite(sellingPrice) || sellingPrice < 0) {{
+        if (sellingPriceInput.value === "" || !Number.isFinite(sellingPrice) || sellingPrice < 0) {{
             profitDisplay.textContent = "Enter a valid selling price";
             return;
-      }}
+        }}
 
-        const profit = sellingPrice - productCost;
+        const shippingCost = Number(shippingCostInput.value) || 0;
+        const otherFees = Number(otherFeesInput.value) || 0;
+        const profit = sellingPrice - productCost - shippingCost - otherFees;
 
-        profitDisplay.textContent =
-            "R" + profit.toFixed(2);
+        profitDisplay.textContent = "R" + profit.toFixed(2);
         profitDisplay.style.color = profit >= 0 ? "green" : "red";
-  }});
+    }}
+
+    sellingPriceInput.addEventListener("input", calculateProfit);
+    shippingCostInput.addEventListener("input", calculateProfit);
+    otherFeesInput.addEventListener("input", calculateProfit);
 </script>
+
 
                 <p>Rating: {rating}</p>
                 <p>Orders: {orders}</p>
