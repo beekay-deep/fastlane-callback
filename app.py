@@ -406,6 +406,13 @@ def dashboard():
     <title>Fastlane Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+                body {
+                margin: 0;
+                padding: 30px;
+                font-family: Arial, sans-serif;
+                background: #f5f7fb;
+                color: #222;
+            }
             .dashboard {
                 max-width: 1200px;
                 margin: auto;
