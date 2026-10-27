@@ -449,6 +449,49 @@ def prepare_listing():
                 <img src="{image_url}" alt="Product image">
                 <h2>{title}</h2>
                 <p>AliExpress price: {price}</p>
+                
+<div style="margin-top: 25px; padding: 20px; background: #f4f6f8; border-radius: 10px;">
+    <h3>Selling Price Calculator</h3>
+
+    <label for="selling-price">Your selling price (R):</label>
+    <input
+        type="number"
+        id="selling-price"
+        min="0"
+        step="0.01"
+        placeholder="Enter your selling price"
+        style="width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box;"
+    >
+
+    <p>
+        Estimated profit:
+        <strong id="estimated-profit">Enter a selling price</strong>
+    </p>
+</div>
+
+<script>
+    const sellingPriceInput = document.getElementById("selling-price");
+    const profitDisplay = document.getElementById("estimated-profit");
+    const productCost = parseFloat(
+        String.raw`{{price}}`.replace(/[^0-9.]/g, "")
+);
+
+    sellingPriceInput.addEventListener("input", function () {{
+        const sellingPrice = parseFloat(this.value);
+
+        if (this.value === "" || !Number.isFinite(sellingPrice) || sellingPrice < 0) {{
+            profitDisplay.textContent = "Enter a valid selling price";
+            return;
+      }}
+
+        const profit = sellingPrice - productCost;
+
+        profitDisplay.textContent =
+            "R" + profit.toFixed(2);
+        profitDisplay.style.color = profit >= 0 ? "green" : "red";
+  }});
+</script>
+
                 <p>Rating: {rating}</p>
                 <p>Orders: {orders}</p>
                 <p>Product ID: {item_id}</p>
