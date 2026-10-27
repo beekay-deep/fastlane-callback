@@ -409,8 +409,8 @@ def prepare_listing():
 
         if not product:
             return "Product not found in Fastlane.", 404
-
         item_id, title, image_url, price, rating, orders, item_url = product
+        
         price = str(price).replace("R", "").replace(",", "").strip()
         return f"""
         <!DOCTYPE html>
