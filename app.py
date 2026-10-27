@@ -472,9 +472,9 @@ def prepare_listing():
 <script>
     const sellingPriceInput = document.getElementById("selling-price");
     const profitDisplay = document.getElementById("estimated-profit");
-    const productCost = parseFloat(
-        String.raw`{{price}}`.replace(/[^0-9.]/g, "")
-);
+    const productCost = "{{price}}"; 
+        String.raw`{{price}}`.replace(/[^0-9.]/g, ""));
+
 
     sellingPriceInput.addEventListener("input", function () {{
         const sellingPrice = parseFloat(this.value);
