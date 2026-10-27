@@ -73,6 +73,7 @@ def save_tokens(token_data):
     try:
         cursor = connection.cursor()
 
+       
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS aliexpress_tokens (
                 id SERIAL PRIMARY KEY,
@@ -89,12 +90,6 @@ def save_tokens(token_data):
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS imported_products (
-            
-        cursor.execute("""
-            ALTER TABLE imported_products
-            ADD COLUMN IF NOT EXISTS description TEXT
-        """)
-
                 id SERIAL PRIMARY KEY,
                 item_id TEXT UNIQUE NOT NULL,
                 title TEXT,
@@ -106,6 +101,12 @@ def save_tokens(token_data):
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        cursor.execute("""
+            ALTER TABLE imported_products
+            ADD COLUMN IF NOT EXISTS description TEXT
+        """)
+
         cursor.execute("""
             DELETE FROM aliexpress_tokens
         """)
@@ -138,6 +139,7 @@ def save_tokens(token_data):
         connection.close()
 
     return True
+
 
 @app.route("/status")
 def status():
