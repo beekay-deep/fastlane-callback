@@ -89,6 +89,12 @@ def save_tokens(token_data):
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS imported_products (
+            
+        cursor.execute("""
+            ALTER TABLE imported_products
+            ADD COLUMN IF NOT EXISTS description TEXT
+        """)
+
                 id SERIAL PRIMARY KEY,
                 item_id TEXT UNIQUE NOT NULL,
                 title TEXT,
@@ -261,7 +267,7 @@ def product_test():
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
  
-@app.route("/import-product", methods=["POST"])
+@app.route("/import-product", methods=["POST"]) 
 def import_product():
     try:
         item_id = request.form.get("item_id", "")
@@ -449,6 +455,11 @@ def prepare_listing():
                 <img src="{image_url}" alt="Product image">
                 <h2>{title}</h2>
                 <p>AliExpress price: {price}</p>
+                
+                <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
+    <h3>Product Description</h3>
+    <p>{title}</p>
+</div>
                 
 <div style="margin-top: 25px; padding: 20px; background: #f4f6f8; border-radius: 10px;">
     <h3>Selling Price Calculator</h3>
@@ -1135,6 +1146,8 @@ def product_search():
         product_cards = ""
 
         for product in product_list:
+            print("FASTLANE PRODUCT FIELDS:", list(product.keys()))
+        
             title = product.get(
                 "title",
                 "No title available"
