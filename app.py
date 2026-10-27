@@ -603,7 +603,32 @@ def imported_products():
                 <a href="{item_url}" target="_blank">
                     View on AliExpress
                 </a>
+<form
+    method="GET"
+    action="/prepare-listing"
+    style="margin-top: 10px;"
+>
+    <input
+        type="hidden"
+        name="item_id"
+        value="{item_id}"
+    >
 
+    <button
+        type="submit"
+        style="
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        "
+    >
+        Prepare Listing
+    </button>
+</form>
 <form
     method="POST"
     action="/delete-product"
