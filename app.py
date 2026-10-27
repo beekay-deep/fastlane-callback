@@ -383,6 +383,89 @@ def delete_product():
             "Product delete failed. Check Render logs.",
             500
         )
+
+
+@app.route("/prepare-listing")
+def prepare_listing():
+    try:
+        item_id = request.args.get("item_id", "")
+
+        if not item_id:
+            return "Prepare Listing failed: Product ID is missing.", 400
+
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT item_id, title, image_url, price, rating, orders, item_url
+            FROM imported_products
+            WHERE item_id = %s
+        """, (item_id,))
+
+        product = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        if not product:
+            return "Product not found in Fastlane.", 404
+
+        item_id, title, image_url, price, rating, orders, item_url = product
+
+        return f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Fastlane - Prepare Listing</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    background: #f4f6f8;
+                    margin: 0;
+                    padding: 30px;
+                }}
+                .container {{
+                    max-width: 800px;
+                    margin: auto;
+                    background: white;
+                    padding: 24px;
+                    border-radius: 12px;
+                }}
+                img {{
+                    width: 180px;
+                    height: 180px;
+                    object-fit: contain;
+                }}
+                a {{
+                    display: inline-block;
+                    margin-top: 20px;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Prepare Listing</h1>
+                <img src="{image_url}" alt="Product image">
+                <h2>{title}</h2>
+                <p>AliExpress price: {price}</p>
+                <p>Rating: {rating}</p>
+                <p>Orders: {orders}</p>
+                <p>Product ID: {item_id}</p>
+                <a href="{item_url}" target="_blank" rel="noopener noreferrer">
+                    View original on AliExpress
+                </a>
+                <br>
+                <a href="/imported-products">Back to Imported Products</a>
+            </div>
+        </body>
+        </html>
+        """
+
+    except Exception as error:
+        print("Prepare listing error:", str(error))
+        return "Could not prepare listing. Check Render logs.", 500
+
 @app.route("/dashboard")
 def dashboard():
     try:
