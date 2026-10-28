@@ -357,7 +357,9 @@ def import_product():
         rating = request.form.get("rating", "")
         orders = request.form.get("orders", "")
         item_url = request.form.get("item_url", "")
-
+        
+        description = get_aliexpress_product_description(item_id)
+        
         if not item_id:
             return "Import failed: Product ID is missing.", 400
 
@@ -376,16 +378,23 @@ def import_product():
                     rating TEXT,
                     orders TEXT,
                     item_url TEXT,
+                    description TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
 
             cursor.execute("""
+                ALTER TABLE imported_products
+                ADD COLUMN IF NOT EXISTS description TEXT
+            """)
+
+             
+            cursor.execute("""
                 INSERT INTO imported_products (
                     item_id, title, image_url, price,
-                    rating, orders, item_url
+                    rating, orders, item_url, description
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (item_id)
                 DO UPDATE SET
                     title = EXCLUDED.title,
@@ -393,11 +402,13 @@ def import_product():
                     price = EXCLUDED.price,
                     rating = EXCLUDED.rating,
                     orders = EXCLUDED.orders,
-                    item_url = EXCLUDED.item_url
+                    item_url = EXCLUDED.item_url,
+                    description = EXCLUDED.description
             """, (
                 item_id, title, image_url, price,
-                rating, orders, item_url
+                rating, orders, item_url, description
             ))
+
 
             connection.commit()
 
