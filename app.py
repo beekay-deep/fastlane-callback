@@ -269,6 +269,84 @@ def product_test():
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
  
+def get_aliexpress_product_description(product_id):
+    try:
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT access_token
+            FROM aliexpress_tokens
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+        cursor.close()
+        connection.close()
+
+        if not row:
+            print("Description fetch failed: no access token found.")
+            return ""
+
+        access_token = row[0]
+        app_key = os.environ.get("ALIEXPRESS_APP_KEY")
+        app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
+
+        if not app_key or not app_secret:
+            print("Description fetch failed: credentials not configured.")
+            return ""
+
+        params = {
+            "app_key": app_key,
+            "access_token": access_token,
+            "method": "aliexpress.ds.product.get",
+            "product_id": str(product_id),
+            "ship_to_country": "ZA",
+            "target_currency": "ZAR",
+            "target_language": "en",
+            "sign_method": "sha256",
+            "timestamp": str(int(time.time() * 1000))
+        }
+
+        sign_string = ""
+        for key in sorted(params.keys()):
+            sign_string += key + params[key]
+
+        params["sign"] = hmac.new(
+            app_secret.encode("utf-8"),
+            sign_string.encode("utf-8"),
+            hashlib.sha256
+        ).hexdigest().upper()
+
+        api_url = "https://api-sg.aliexpress.com/sync"
+        query_string = urllib.parse.urlencode(params)
+
+        api_request = urllib.request.Request(
+            api_url + "?" + query_string,
+            method="GET"
+        )
+
+        with urllib.request.urlopen(api_request, timeout=30) as response:
+            data = json.loads(response.read().decode("utf-8"))
+
+        result = data.get(
+            "aliexpress_ds_product_get_response", {}
+        ).get("result", {})
+
+        base_info = result.get("ae_item_base_info_dto", {})
+
+        description = base_info.get("detail", "")
+
+        if not description:
+            description = base_info.get("mobile_detail", "")
+
+        return description or ""
+
+    except Exception as error:
+        print("Description fetch failed:", str(error))
+        return ""
+
 @app.route("/import-product", methods=["POST"]) 
 def import_product():
     try:
