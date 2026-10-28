@@ -493,8 +493,9 @@ def prepare_listing():
         connection = get_database_connection()
         cursor = connection.cursor()
 
+         
         cursor.execute("""
-            SELECT item_id, title, image_url, price, rating, orders, item_url
+            SELECT item_id, title, image_url, price, rating, orders, item_url, description
             FROM imported_products
             WHERE item_id = %s
         """, (item_id,))
@@ -506,7 +507,9 @@ def prepare_listing():
 
         if not product:
             return "Product not found in Fastlane.", 404
-        item_id, title, image_url, price, rating, orders, item_url = product
+         
+        item_id, title, image_url, price, rating, orders, item_url, description = product
+
         
         price = str(price).replace("R", "").replace(",", "").strip()
         return f"""
@@ -549,7 +552,7 @@ def prepare_listing():
                 
                 <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
     <h3>Product Description</h3>
-    <p>{title}</p>
+    <p>{description}</p>
 </div>
                 
 <div style="margin-top: 25px; padding: 20px; background: #f4f6f8; border-radius: 10px;">
