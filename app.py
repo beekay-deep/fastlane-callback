@@ -7,6 +7,7 @@ import urllib.parse
 import urllib.request
 import json
 from html import unescape
+import re
 import psycopg2
 from datetime import datetime, timezone, timedelta
 app = Flask(__name__)
@@ -339,11 +340,14 @@ def get_aliexpress_product_description(product_id):
 
         description = base_info.get("detail", "")
 
-        if not description:
+                 if not description:
             description = base_info.get("mobile_detail", "")
 
-        return description or ""
+        description = unescape(description or "")
+        description = re.sub(r"<[^>]+>", " ", description)
+        description = re.sub(r"\s+", " ", description).strip()
 
+        return description
     except Exception as error:
         print("Description fetch failed:", str(error))
         return ""
