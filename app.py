@@ -347,6 +347,8 @@ def get_aliexpress_product_description(product_id):
         print("RAW DESCRIPTION:", str(description)[:300])
         description = re.sub(r"<[^>]+>", " ", description)
         description = re.sub(r"\s+", " ", description).strip()
+        
+        print("CLEANED DESCRIPTION:", description[:300])
 
         return description
     except Exception as error:
