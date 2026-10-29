@@ -552,7 +552,11 @@ def prepare_listing():
                 
                 <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
     <h3>Product Description</h3>
-    <p>{description}</p>
+     <textarea
+    id="product-description"
+    rows="8"
+    style="width: 100%; padding: 12px; margin-top: 10px; box-sizing: border-box; font-family: Arial, sans-serif; font-size: 14px;"
+>{description}</textarea>
 </div>
                 
 <div style="margin-top: 25px; padding: 20px; background: #f4f6f8; border-radius: 10px;">
