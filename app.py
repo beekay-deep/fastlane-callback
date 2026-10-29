@@ -344,6 +344,7 @@ def get_aliexpress_product_description(product_id):
             description = base_info.get("mobile_detail", "")
 
         description = unescape(description or "")
+        print("RAW DESCRIPTION:", str(description)[:300])
         description = re.sub(r"<[^>]+>", " ", description)
         description = re.sub(r"\s+", " ", description).strip()
 
