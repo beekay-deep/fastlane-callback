@@ -340,7 +340,7 @@ def get_aliexpress_product_description(product_id):
 
         description = base_info.get("detail", "")
 
-                 if not description:
+               if not description:
             description = base_info.get("mobile_detail", "")
 
         description = unescape(description or "")
