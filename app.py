@@ -6,6 +6,7 @@ import hashlib
 import urllib.parse
 import urllib.request
 import json
+from html import unescape
 import psycopg2
 from datetime import datetime, timezone, timedelta
 app = Flask(__name__)
