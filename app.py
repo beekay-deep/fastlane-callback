@@ -560,81 +560,7 @@ def prepare_listing():
                 
                 <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
     <h3>Product Description</h3>
-     <textarea
-    id="product-description"
-    rows="8"
-    style="width: 100%; padding: 12px; margin-top: 10px; box-sizing: border-box; font-family: Arial, sans-serif; font-size: 14px;"
->{description}</textarea>
-</div>
-                
-<div style="margin-top: 25px; padding: 20px; background: #f4f6f8; border-radius: 10px;">
-    <h3>Selling Price Calculator</h3>
-
-    <label for="selling-price">Your selling price (R):</label>
-    
-<input
-    type="number"
-    id="shipping-cost"
-    min="0"
-    step="0.01"
-    placeholder="Shipping cost (R)"
-    style="width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box;"
->
-
-<input
-    type="number"
-    id="other-fees"
-    min="0"
-    step="0.01"
-    placeholder="Other fees (R)"
-    style="width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box;"
->
-
-    <input
-        type="number"
-        id="selling-price"
-        min="0"
-        step="0.01"
-        placeholder="Enter your selling price"
-        style="width: 100%; padding: 12px; margin-top: 8px; box-sizing: border-box;"
-    >
-
-    <p>
-        Estimated profit:
-        <strong id="estimated-profit">Enter a selling price</strong>
-    </p>
-</div>
-
-
-
-<script>
-    const sellingPriceInput = document.getElementById("selling-price");
-    const shippingCostInput = document.getElementById("shipping-cost");
-    const otherFeesInput = document.getElementById("other-fees");
-    const profitDisplay = document.getElementById("estimated-profit");
-    const productCost = Number("{price}");
-
-    function calculateProfit() {{
-        const sellingPrice = parseFloat(sellingPriceInput.value);
-
-        if (sellingPriceInput.value === "" || !Number.isFinite(sellingPrice) || sellingPrice < 0) {{
-            profitDisplay.textContent = "Enter a valid selling price";
-            return;
-        }}
-
-        const shippingCost = Number(shippingCostInput.value) || 0;
-        const otherFees = Number(otherFeesInput.value) || 0;
-        const profit = sellingPrice - productCost - shippingCost - otherFees;
-
-        profitDisplay.textContent = "R" + profit.toFixed(2);
-        profitDisplay.style.color = profit >= 0 ? "green" : "red";
-    }}
-
-    sellingPriceInput.addEventListener("input", calculateProfit);
-    shippingCostInput.addEventListener("input", calculateProfit);
-    otherFeesInput.addEventListener("input", calculateProfit);
-</script>
-
+  cc
 
                 <p>Rating: {rating}</p>
                 <p>Orders: {orders}</p>
@@ -645,6 +571,24 @@ def prepare_listing():
                 <br>
                 <a href="/imported-products">Back to Imported Products</a>
             </div>
+            <script>
+function copyProductDescription() {{
+    const description = document.getElementById("product-description");
+
+    if (!description) {{
+        alert("Description not found.");
+        return;
+    }}
+
+    navigator.clipboard.writeText(description.value)
+        .then(() => {{
+            alert("Description copied successfully!");
+        }})
+        .catch(() => {{
+            alert("Unable to copy. Please try again.");
+        }});
+}}
+</script>
         </body>
         </html>
         """
