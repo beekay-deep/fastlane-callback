@@ -560,7 +560,20 @@ def prepare_listing():
                 
                 <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
     <h3>Product Description</h3>
-  cc
+    
+  <textarea
+    id="product-description"
+    rows="8"
+    style="width: 100%; padding: 12px; margin-top: 10px; box-sizing: border-box; font-family: Arial, sans-serif; font-size: 14px;"
+>{description}</textarea>
+
+<button
+    type="button"
+    onclick="copyProductDescription()"
+    style="margin-top: 10px; padding: 10px 18px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer;"
+>
+    Copy Description
+</button>
 
                 <p>Rating: {rating}</p>
                 <p>Orders: {orders}</p>
