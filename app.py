@@ -95,9 +95,7 @@ def find_value(data, wanted_key):
 
     return None
 
-for value in data.values():
-            if result is not None:
-                return result
+ 
 def save_tokens(token_data):
     access_token = find_value(token_data, "access_token")
     refresh_token = find_value(token_data, "refresh_token")
