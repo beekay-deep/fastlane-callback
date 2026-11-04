@@ -555,7 +555,15 @@ def prepare_listing():
             <div class="container">
                 <h1>Prepare Listing</h1>
                 <img src="{image_url}" alt="Product image">
-                <h2>{title}</h2>
+                
+                <label for="product-title">Product Title</label>
+
+<input
+    type="text"
+    id="product-title"
+    value="{title}"
+    style="width: 100%; padding: 12px; margin-top: 10px; box-sizing: border-box; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;"
+>
                 <p>AliExpress price: {price}</p>
                 
                 <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
