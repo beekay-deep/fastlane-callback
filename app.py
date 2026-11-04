@@ -12,6 +12,11 @@ from html import unescape
 import re
 import psycopg2
 from datetime import datetime, timezone, timedelta
+class User(UserMixin):
+    def __init__(self, id, email, password_hash):
+        self.id = id
+        self.email = email
+        self.password_hash = password_hash
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY")
 
@@ -47,6 +52,29 @@ def get_database_connection():
 
 
 def find_value(data, wanted_key):
+    @login_manager.user_loader
+def load_user(user_id):
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT id, email, password_hash FROM users WHERE id = %s",
+        (user_id,)
+    )
+
+    user_data = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if user_data:
+        return User(
+            id=user_data[0],
+            email=user_data[1],
+            password_hash=user_data[2]
+        )
+
+    return None
     if isinstance(data, dict):
         if wanted_key in data:
             return data[wanted_key]
