@@ -51,8 +51,8 @@ def get_database_connection():
     )
 
 
-def find_value(data, wanted_key):
-    @login_manager.user_loader
+
+@login_manager.user_loader
 def load_user(user_id):
     connection = get_database_connection()
     cursor = connection.cursor()
@@ -75,6 +75,9 @@ def load_user(user_id):
         )
 
     return None
+    
+
+def find_value(data, wanted_key):
     if isinstance(data, dict):
         if wanted_key in data:
             return data[wanted_key]
@@ -92,7 +95,9 @@ def load_user(user_id):
 
     return None
 
-
+for value in data.values():
+            if result is not None:
+                return result
 def save_tokens(token_data):
     access_token = find_value(token_data, "access_token")
     refresh_token = find_value(token_data, "refresh_token")
