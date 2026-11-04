@@ -1,4 +1,6 @@
-from flask import Flask, request
+ from flask import Flask, request, redirect, url_for, render_template_string, session, flash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import time
 import hmac
@@ -11,6 +13,11 @@ import re
 import psycopg2
 from datetime import datetime, timezone, timedelta
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY")
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
 API_URL = "https://api-sg.aliexpress.com/rest/auth/token/create"
 API_NAME = "/auth/token/create"
