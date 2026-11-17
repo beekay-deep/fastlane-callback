@@ -1341,7 +1341,7 @@ def product_search():
 
         params = {
             "app_key": app_key,
-            "access_token": access_token,
+            "session": access_token,
             "method": api_name,
             "keyWord": keyword,
             "local": "en_US",
