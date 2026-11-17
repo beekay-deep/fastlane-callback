@@ -198,6 +198,129 @@ def save_tokens(token_data):
     return True
 
 
+def refresh_aliexpress_token():
+    app_key = os.environ.get("ALIEXPRESS_APP_KEY")
+    app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
+
+    if not app_key or not app_secret:
+        print("AliExpress app credentials are missing.")
+        return None
+
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_database_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT id, refresh_token, refresh_expires_in, updated_at
+            FROM aliexpress_tokens
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+
+        if not row:
+            print("No AliExpress token record found.")
+            return None
+
+        token_id, refresh_token, refresh_expires_in, updated_at = row
+
+        if not refresh_token or not refresh_expires_in:
+            print("Refresh token is missing or expired.")
+            return None
+
+        params = {
+            "app_key": app_key,
+            "sign_method": "sha256",
+            "timestamp": str(int(time.time() * 1000)),
+            "partner_id": "iop-sdk-python-20220609",
+            "method": REFRESH_API_NAME,
+            "simplify": "false",
+            "format": "json",
+            "refresh_token": refresh_token
+        }
+
+        params["sign"] = generate_iop_sign(
+            REFRESH_API_NAME,
+            params,
+            app_secret
+        )
+
+        response = requests.post(
+            REFRESH_API_URL,
+            data=params,
+            timeout=30
+        )
+
+        response.raise_for_status()
+        token_data = response.json()
+
+        new_access_token = find_value(token_data, "access_token")
+        new_refresh_token = find_value(token_data, "refresh_token")
+        new_expires_in = find_value(token_data, "expires_in")
+        new_refresh_expires_in = find_value(
+            token_data, "refresh_expires_in"
+        )
+
+        if not new_access_token or not new_refresh_token:
+            print("AliExpress did not return both new tokens.")
+            print(token_data)
+            return None
+
+        if new_expires_in is None:
+            print("AliExpress did not return the access token expiry.")
+            return None
+
+        if new_refresh_expires_in is None:
+            remaining_seconds = (
+                updated_at.timestamp()
+                + int(refresh_expires_in)
+                - time.time()
+            )
+            new_refresh_expires_in = max(
+                0, int(remaining_seconds)
+            )
+
+        cursor.execute("""
+            UPDATE aliexpress_tokens
+            SET access_token = %s,
+                refresh_token = %s,
+                expires_in = %s,
+                refresh_expires_in = %s,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = %s
+        """, (
+            new_access_token,
+            new_refresh_token,
+            int(new_expires_in),
+            int(new_refresh_expires_in),
+            token_id
+        ))
+
+        conn.commit()
+
+        print("AliExpress access token refreshed successfully.")
+        return new_access_token
+
+    except Exception as e:
+        if conn:
+            conn.rollback()
+
+        print("AliExpress token refresh failed:", str(e))
+        return None
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()
+
+
+
 @app.route("/status")
 def status():
     try:
