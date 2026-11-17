@@ -25,7 +25,9 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 API_URL = "https://api-sg.aliexpress.com/rest/auth/token/create"
+REFRESH_API_URL = "https://api-sg.aliexpress.com/rest/auth/token/refresh"
 API_NAME = "/auth/token/create"
+REFRESH_API_NAME = "/auth/token/refresh"
 
 
 def generate_sign(params, app_secret):
@@ -43,7 +45,21 @@ def generate_sign(params, app_secret):
     ).hexdigest().upper()
 
     return digest
+    
+def generate_iop_sign(api_path, params, app_secret):
+    sorted_keys = sorted(params.keys())
 
+    sign_string = api_path + "".join(
+        key + str(params[key]) for key in sorted_keys
+    )
+
+    digest = hmac.new(
+        app_secret.encode("utf-8"),
+        sign_string.encode("utf-8"),
+        hashlib.sha256
+    ).hexdigest().upper()
+
+    return digest
 
 def get_database_connection():
     return psycopg2.connect(
