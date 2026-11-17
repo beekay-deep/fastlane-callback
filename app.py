@@ -745,6 +745,39 @@ def prepare_listing():
                 <p>AliExpress price: {price}</p>
                 
                 <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
+    <h3>Profit Calculator</h3>
+
+    <label>Selling Price (R)</label>
+    <input type="number" id="selling-price" step="0.01" placeholder="Enter selling price" style="width: 100%; padding: 10px; margin: 8px 0 15px; box-sizing: border-box;">
+
+    <label>Shipping Cost (R)</label>
+    <input type="number" id="shipping-cost" step="0.01" placeholder="Enter shipping cost" style="width: 100%; padding: 10px; margin: 8px 0 15px; box-sizing: border-box;">
+
+    <label>Other Fees (R)</label>
+    <input type="number" id="other-fees" step="0.01" placeholder="Enter other fees" style="width: 100%; padding: 10px; margin: 8px 0 15px; box-sizing: border-box;">
+
+    <h3>Estimated Profit: <span id="estimated-profit">R0.00</span></h3>
+</div>
+
+<script>
+const productCost = Number("{price}");
+
+function calculateProfit() {{
+    const sellingPrice = Number(document.getElementById("selling-price").value) || 0;
+    const shippingCost = Number(document.getElementById("shipping-cost").value) || 0;
+    const otherFees = Number(document.getElementById("other-fees").value) || 0;
+
+    const profit = sellingPrice - productCost - shippingCost - otherFees;
+
+    document.getElementById("estimated-profit").textContent = "R" + profit.toFixed(2);
+}}
+
+document.getElementById("selling-price").addEventListener("input", calculateProfit);
+document.getElementById("shipping-cost").addEventListener("input", calculateProfit);
+document.getElementById("other-fees").addEventListener("input", calculateProfit);
+</script>
+
+                <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px;">
     <h3>Product Description</h3>
     
   <textarea
