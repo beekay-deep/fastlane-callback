@@ -1319,7 +1319,7 @@ def product_search():
         if not row:
             return "Product search: no access token found.", 500
 
-            access_token, expires_in, updated_at = row
+        access_token, expires_in, updated_at = row
 
         app_key = os.environ.get("ALIEXPRESS_APP_KEY")
         app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
