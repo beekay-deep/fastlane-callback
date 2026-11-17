@@ -1263,6 +1263,19 @@ def imported_products():
 
 <h1>Imported Products</h1>
 
+<a href="/dashboard" style="
+    display: inline-block;
+    margin: 15px 0 20px;
+    padding: 10px 18px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+">
+    ← Back to Dashboard
+</a>
+
 <div class="products">
     {product_cards}
 </div>
