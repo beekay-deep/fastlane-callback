@@ -707,7 +707,7 @@ def prepare_listing():
             <style>
                 body {{
                     font-family: Arial, sans-serif;
-                    background: #f4f6f8;
+                    background: #e5e7eb;
                     margin: 0;
                     padding: 30px;
                 }}
@@ -1088,7 +1088,7 @@ def imported_products():
 
     body {{
         font-family: Arial, sans-serif;
-        background: #f4f6f8;
+        background: #e5e7eb;
         margin: 0;
         padding: 30px;
     }}
