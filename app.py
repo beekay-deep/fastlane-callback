@@ -11,6 +11,7 @@ import json
 from html import unescape
 import re
 import psycopg2
+import requests
 from datetime import datetime, timezone, timedelta
 class User(UserMixin):
     def __init__(self, id, email, password_hash):
