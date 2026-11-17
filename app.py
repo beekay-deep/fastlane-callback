@@ -1305,7 +1305,7 @@ def product_search():
         cursor = connection.cursor()
 
         cursor.execute("""
-            SELECT access_token
+            SELECT access_token, expires_in, updated_at
             FROM aliexpress_tokens
             ORDER BY updated_at DESC
             LIMIT 1
@@ -1319,13 +1319,21 @@ def product_search():
         if not row:
             return "Product search: no access token found.", 500
 
-        access_token = row[0]
+            access_token, expires_in, updated_at = row
 
         app_key = os.environ.get("ALIEXPRESS_APP_KEY")
         app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
 
         if not app_key or not app_secret:
             return "Product search: AliExpress credentials are not configured.", 500
+        if (
+            expires_in is None
+            or updated_at.timestamp() + int(expires_in) <= time.time() + 300
+        ):
+            access_token = refresh_aliexpress_token()
+
+            if not access_token:
+                return "Product search: Unable to refresh AliExpress access token. Please authorize again if necessary.", 500
 
         api_name = "aliexpress.ds.text.search"
 
