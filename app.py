@@ -1394,7 +1394,7 @@ def product_search():
             "countryCode": "ZA",
             "sortBy": "orders,desc",
             "pageSize": "20",
-            "pageIndex": "1",
+            "pageIndex": str(request.args.get("page", "1")),
             "currency": "ZAR",
             "sign_method": "sha256",
             "timestamp": timestamp
