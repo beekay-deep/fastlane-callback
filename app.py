@@ -1438,6 +1438,12 @@ def product_search():
                 )
 
                 response_code = response_data.get("code")
+                print(
+                    "AliExpress search attempt",
+                    attempt + 1,
+                    "returned code:",
+                    response_code
+                )
 
                 if response_code == "00":
                     break
