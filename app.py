@@ -1594,8 +1594,7 @@ def product_search():
         )
 
         pagination_html = ""
-        pagination_html = "PAGINATION TEST"
-
+         
         if current_page > 1:
             previous_url = "/product-search?" + urllib.parse.urlencode({
                 "keyword": keyword,
