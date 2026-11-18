@@ -1433,31 +1433,31 @@ def product_search():
         response_code = response_data.get("code")
         
         if response_code != "00":
-    return """
-    <div style="
-        max-width: 600px;
-        margin: 60px auto;
-        padding: 30px;
-        text-align: center;
-        font-family: Arial, sans-serif;
-        background: #f5f7fb;
-        border-radius: 12px;
-    ">
-        <h2>Product Search Temporarily Unavailable</h2>
+            return """
+            <div style="
+                max-width: 600px;
+                margin: 60px auto;
+                padding: 30px;
+                text-align: center;
+                font-family: Arial, sans-serif;
+                background: #f5f7fb;
+                border-radius: 12px;
+            ">
+            <h2>Product Search Temporarily Unavailable</h2>
 
-        <p>
+           <p>
             We're having difficulty retrieving products right now.
-        </p>
+           </p>
 
-        <p>
+           <p>
             Please try again in a few moments.
-        </p>
+          </p>
 
         <a href="/product-search">
             Return to Product Search
         </a>
-    </div>
-    """, 503
+           </div>
+           """, 503
 
         products_data = response_data.get("data", {})
         products = products_data.get("products", {})
