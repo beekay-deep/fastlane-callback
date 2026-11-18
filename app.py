@@ -1431,13 +1431,33 @@ def product_search():
         )
 
         response_code = response_data.get("code")
-
+        
         if response_code != "00":
-            return """
-            <h1>Fastlane Product Search Error</h1>
-            <p>AliExpress returned an error.</p>
-            <pre>{}</pre>
-            """.format(json.dumps(data, indent=2)), 500
+    return """
+    <div style="
+        max-width: 600px;
+        margin: 60px auto;
+        padding: 30px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        border-radius: 12px;
+    ">
+        <h2>Product Search Temporarily Unavailable</h2>
+
+        <p>
+            We're having difficulty retrieving products right now.
+        </p>
+
+        <p>
+            Please try again in a few moments.
+        </p>
+
+        <a href="/product-search">
+            Return to Product Search
+        </a>
+    </div>
+    """, 503
 
         products_data = response_data.get("data", {})
         products = products_data.get("products", {})
