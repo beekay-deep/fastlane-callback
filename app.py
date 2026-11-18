@@ -6,6 +6,7 @@ import time
 import hmac
 import hashlib
 import urllib.parse
+import urllib.error
 import urllib.request
 import json
 from html import unescape
@@ -1420,17 +1421,52 @@ def product_search():
         query_string = urllib.parse.urlencode(params)
         request_url = api_url + "?" + query_string
 
-        with urllib.request.urlopen(request_url, timeout=30) as response:
-            response_body = response.read().decode("utf-8")
+       
+        
+        response_body = ""
 
-        data = json.loads(response_body)
+        for attempt in range(2):
+            try:
+                with urllib.request.urlopen(request_url, timeout=30) as response:
+                    response_body = response.read().decode("utf-8")
 
-        response_data = data.get(
-            "aliexpress_ds_text_search_response",
-            {}
-        )
+                data = json.loads(response_body)
 
-        response_code = response_data.get("code")
+                response_data = data.get(
+                    "aliexpress_ds_text_search_response",
+                    {}
+                )
+
+                response_code = response_data.get("code")
+
+                if response_code == "00":
+                    break
+
+                if response_code != "NGSELECTION_SEARCH_ERROR":
+                    break
+
+                if attempt == 0:
+                    print("Temporary AliExpress search error. Retrying once...")
+
+            except urllib.error.HTTPError as error:
+                print("AliExpress HTTP error:", error.code)
+
+                if error.code not in (500, 502, 503, 504):
+                    raise
+
+                if attempt == 1:
+                    response_code = None
+                    break
+
+                print("Temporary AliExpress server error. Retrying once...")
+            except (urllib.error.URLError, TimeoutError) as error:
+                print("AliExpress network error:", str(error))
+
+                if attempt == 1:
+                    response_code = None
+                    break
+
+                print("Temporary network error. Retrying once...")
         
         if response_code != "00":
             return """
