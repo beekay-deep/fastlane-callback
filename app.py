@@ -1628,6 +1628,59 @@ def product_search():
                     margin: auto;
                     padding: 25px;
                  }
+                 .supplier-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.supplier-section h2 {
+    margin-top: 0;
+    color: #111827;
+}
+
+.supplier-section p {
+    color: #666;
+}
+
+.supplier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.supplier-card {
+    padding: 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: #f9fafb;
+}
+
+.supplier-card h3 {
+    margin: 0 0 10px;
+    color: #111827;
+}
+
+.supplier-card span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.supplier-card.active {
+    border-color: #16a34a;
+    background: #f0fdf4;
+}
+
+.supplier-card.active span {
+    color: #16a34a;
+}
+
+.supplier-card.coming-soon span {
+    color: #6b7280;
+}
 
                 .search-box {
                     background: white;
@@ -1834,12 +1887,57 @@ def product_search():
             alt="Fastlane Logo"
             class="fastlane-logo"
         >
-        <p>AliExpress Dropshipping Product Search</p>
+        <p>Multi-Supplier Dropshipping Product Search</p>
     </div>
 
     <div class="container">
+    <div class="supplier-section">
+
+    <h2>Choose Your Supplier</h2>
+
+    <p>
+        Search products from your preferred dropshipping supplier.
+    </p>
+
+    <div class="supplier-grid">
+
+        <div class="supplier-card active">
+            <h3>AliExpress</h3>
+            <span>Available Now</span>
+        </div>
+
+        <div class="supplier-card coming-soon">
+            <h3>CJdropshipping</h3>
+            <span>Coming Soon</span>
+        </div>
+
+        <div class="supplier-card coming-soon">
+            <h3>Banggood</h3>
+            <span>Coming Soon</span>
+        </div>
+
+        <div class="supplier-card coming-soon">
+            <h3>Other Suppliers</h3>
+            <span>Future Integrations</span>
+        </div>
+
+    </div>
+
+</div>
 
                 <div class="search-box">
+                <h2>Find Products to Sell</h2>
+
+<p>
+    Discover products you can add to your online store.
+    Enter a product name or category to explore available products.
+</p>
+
+<p style="color: #666; font-size: 14px;">
+    <strong>Search ideas:</strong>
+    Home Decor, Watches, Phone Accessories,
+    Kitchen Products, Fashion, Beauty and Pet Supplies.
+</p>
 
                     <form
                         method="GET"
@@ -1850,7 +1948,7 @@ def product_search():
                             type="text"
                             name="keyword"
                             value="{keyword}"
-                            placeholder="Search AliExpress products..."
+                            placeholder="e.g. watches, phone cases, wall art, kitchen accessories..."
                         >
 
                         <button type="submit">
