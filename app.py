@@ -1588,7 +1588,7 @@ def product_search():
 
             </div>
             """
-                    current_page = max(
+        current_page = max(
             1,
             int(request.args.get("page", "1"))
         )
