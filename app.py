@@ -1588,6 +1588,38 @@ def product_search():
 
             </div>
             """
+                    current_page = max(
+            1,
+            int(request.args.get("page", "1"))
+        )
+
+        pagination_html = ""
+
+        if current_page > 1:
+            previous_url = "/product-search?" + urllib.parse.urlencode({
+                "keyword": keyword,
+                "page": current_page - 1
+            })
+
+            pagination_html += f"""
+                <a href="{previous_url}">← Previous</a>
+            """
+
+        pagination_html += f"""
+            <span style="margin: 0 15px;">
+                Page {current_page}
+            </span>
+        """
+
+        if len(product_list) == 20:
+            next_url = "/product-search?" + urllib.parse.urlencode({
+                "keyword": keyword,
+                "page": current_page + 1
+            })
+
+            pagination_html += f"""
+                <a href="{next_url}">Next →</a>
+            """
 
         dashboard_html = """
         <!DOCTYPE html>
@@ -1967,6 +1999,8 @@ def product_search():
                 <div class="results">
 
                     {product_cards}
+                    
+                    {pagination_html}
 
                 </div>
 
@@ -1977,11 +2011,14 @@ def product_search():
         </html>
         """
         
+        
         return dashboard_html.replace(
-            "{keyword}", keyword
-        ).replace(
-            "{product_cards}", product_cards
-        )
+    "{keyword}", keyword
+).replace(
+    "{product_cards}", product_cards
+).replace(
+    "{pagination_html}", pagination_html
+)
         
     except Exception as error:
         print(
