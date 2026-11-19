@@ -219,35 +219,174 @@ def login():
 
         message = "Invalid email address or password."
 
+ 
     return render_template_string("""
-        <h2>Sign In to Fastlane</h2>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Sign In - Fastlane</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <p>{{ message }}</p>
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
 
-        <form method="POST">
-            <input
-                type="email"
-                name="email"
-                placeholder="Email address"
-                required
-            >
+                body {
+                    margin: 0;
+                    min-height: 100vh;
+                    padding: 30px 15px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: Arial, sans-serif;
+                    background: #f3f6fb;
+                    color: #222;
+                }
 
-            <br><br>
+                .login-container {
+                    width: 100%;
+                    max-width: 440px;
+                    text-align: center;
+                }
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                required
-            >
+                .logo {
+                    width: 220px;
+                    max-width: 85%;
+                    height: auto;
+                    margin-bottom: 10px;
+                }
 
-            <br><br>
+                .tagline {
+                    color: #1769d2;
+                    font-weight: bold;
+                    margin-bottom: 12px;
+                }
 
-            <button type="submit">Sign In</button>
-        </form>
+                .description {
+                    color: #666;
+                    line-height: 1.6;
+                    margin-bottom: 28px;
+                }
 
-        <p><a href="/register">Create an account</a></p>
+                .login-card {
+                    background: white;
+                    padding: 30px;
+                    border-radius: 14px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    text-align: left;
+                }
+
+                h2 {
+                    text-align: center;
+                    margin-top: 0;
+                    margin-bottom: 22px;
+                }
+
+                .message {
+                    color: #dc3545;
+                    text-align: center;
+                }
+
+                input {
+                    width: 100%;
+                    padding: 13px;
+                    margin: 8px 0 18px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    font-size: 15px;
+                }
+
+                button {
+                    width: 100%;
+                    padding: 14px;
+                    background: #1769d2;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    background: #1255aa;
+                }
+
+                .register-link {
+                    text-align: center;
+                    margin-top: 20px;
+                }
+
+                .register-link a {
+                    color: #1769d2;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <div class="login-container">
+
+                <img
+                    src="/static/fastlane-logo.png"
+                    alt="Fastlane logo"
+                    class="logo"
+                >
+
+                <p class="tagline">Discover. Import. Sell.</p>
+
+                <p class="description">
+                    Fastlane helps dropshippers discover products,
+                    prepare listings and manage their online selling
+                    business with greater ease.
+                </p>
+
+                <div class="login-card">
+
+                    <h2>Sign In to Fastlane</h2>
+
+                    <p class="message">{{ message }}</p>
+
+                    <form method="POST">
+
+                        <label>Email address</label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            required
+                        >
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button type="submit">Sign In</button>
+
+                    </form>
+
+                    <div class="register-link">
+                        Don't have an account?
+                        <a href="/register">Create an account</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </body>
+        </html>
     """, message=message)
+
  
     
 
