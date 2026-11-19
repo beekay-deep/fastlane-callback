@@ -1505,6 +1505,7 @@ def dashboard():
     return dashboard_html.replace("TOTAL_PRODUCTS_PLACEHOLDER", str(total_products))
     
 @app.route("/imported-products")
+@login_required
 def imported_products():
     try:
         connection = get_database_connection()
@@ -1520,8 +1521,9 @@ def imported_products():
                 orders,
                 item_url
             FROM imported_products
+            WHERE user_id = %s
             ORDER BY created_at DESC
-        """)
+        """, (current_user.id,))
 
         products = cursor.fetchall()
 
