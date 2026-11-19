@@ -145,42 +145,183 @@ def register():
                 cursor.close()
                 connection.close()
 
+
     return render_template_string("""
-        <h2>Create Your Fastlane Account</h2>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Create Account - Fastlane</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <p>{{ message }}</p>
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
 
-        <form method="POST">
-            <input
-                type="email"
-                name="email"
-                placeholder="Email address"
-                required
-            >
+                body {
+                    margin: 0;
+                    min-height: 100vh;
+                    padding: 30px 15px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: Arial, sans-serif;
+                    background: #f3f6fb;
+                    color: #222;
+                }
 
-            <br><br>
+                .register-container {
+                    width: 100%;
+                    max-width: 440px;
+                    text-align: center;
+                }
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password (at least 8 characters)"
-                required
-            >
+                .logo {
+                    width: 220px;
+                    max-width: 85%;
+                    height: auto;
+                    margin-bottom: 10px;
+                }
 
-            <br><br>
+                .tagline {
+                    color: #1769d2;
+                    font-weight: bold;
+                    margin-bottom: 12px;
+                }
 
-            <input
-                type="password"
-                name="confirm_password"
-                placeholder="Confirm password"
-                required
-            >
+                .description {
+                    color: #666;
+                    line-height: 1.6;
+                    margin-bottom: 28px;
+                }
 
-            <br><br>
+                .register-card {
+                    background: white;
+                    padding: 30px;
+                    border-radius: 14px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    text-align: left;
+                }
 
-            <button type="submit">Create Account</button>
-        </form>
+                h2 {
+                    text-align: center;
+                    margin-top: 0;
+                    margin-bottom: 22px;
+                }
+
+                .message {
+                    color: #dc3545;
+                    text-align: center;
+                }
+
+                input {
+                    width: 100%;
+                    padding: 13px;
+                    margin: 8px 0 18px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    font-size: 15px;
+                }
+
+                button {
+                    width: 100%;
+                    padding: 14px;
+                    background: #1769d2;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    background: #1255aa;
+                }
+
+                .login-link {
+                    text-align: center;
+                    margin-top: 20px;
+                }
+
+                .login-link a {
+                    color: #1769d2;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <div class="register-container">
+
+                <img
+                    src="/static/fastlane-logo.png"
+                    alt="Fastlane logo"
+                    class="logo"
+                >
+
+                <p class="tagline">Discover. Import. Sell.</p>
+
+                <p class="description">
+                    Fastlane helps dropshippers discover products,
+                    prepare listings and manage their online selling
+                    business with greater ease.
+                </p>
+
+                <div class="register-card">
+
+                    <h2>Create Your Fastlane Account</h2>
+
+                    <p class="message">{{ message }}</p>
+
+                    <form method="POST">
+
+                        <label>Email address</label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            required
+                        >
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password (at least 8 characters)"
+                            required
+                        >
+
+                        <label>Confirm password</label>
+
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            placeholder="Confirm your password"
+                            required
+                        >
+
+                        <button type="submit">Create Account</button>
+
+                    </form>
+
+                    <div class="login-link">
+                        Already have an account?
+                        <a href="/login">Sign in</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </body>
+        </html>
     """, message=message)
+ 
 
 
     
