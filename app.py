@@ -1137,6 +1137,7 @@ def import_product():
         return "Product import failed. Check Render logs.", 500
 
 @app.route("/delete-product", methods=["POST"])
+@login_required
 def delete_product():
     try:
         item_id = request.form.get("item_id", "")
@@ -1148,8 +1149,8 @@ def delete_product():
         cursor = connection.cursor()
 
         cursor.execute(
-            "DELETE FROM imported_products WHERE item_id = %s",
-            (item_id,)
+            "DELETE FROM imported_products WHERE item_id = %s AND user_id = %s",
+            (item_id, current_user.id)
         )
 
         connection.commit()
