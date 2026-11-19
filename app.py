@@ -91,8 +91,164 @@ def load_user(user_id):
             email=user_data[1],
             password_hash=user_data[2]
         )
-
     return None
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    message = ""
+
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
+
+        if not email or "@" not in email:
+            message = "Please enter a valid email address."
+
+        elif len(password) < 8:
+            message = "Your password must be at least 8 characters."
+
+        elif password != confirm_password:
+            message = "Your passwords do not match."
+
+        else:
+            connection = get_database_connection()
+            cursor = connection.cursor()
+
+            try:
+                password_hash = generate_password_hash(password)
+
+                cursor.execute(
+                    """
+                    INSERT INTO users (email, password_hash)
+                    VALUES (%s, %s)
+                    ON CONFLICT (email) DO NOTHING
+                    RETURNING id
+                    """,
+                    (email, password_hash)
+                )
+
+                new_user = cursor.fetchone()
+
+                if new_user:
+                    connection.commit()
+                    return redirect(url_for("login"))
+
+                connection.rollback()
+                message = "An account with this email already exists."
+
+            except Exception:
+                connection.rollback()
+                raise
+
+            finally:
+                cursor.close()
+                connection.close()
+
+    return render_template_string("""
+        <h2>Create Your Fastlane Account</h2>
+
+        <p>{{ message }}</p>
+
+        <form method="POST">
+            <input
+                type="email"
+                name="email"
+                placeholder="Email address"
+                required
+            >
+
+            <br><br>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Password (at least 8 characters)"
+                required
+            >
+
+            <br><br>
+
+            <input
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm password"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">Create Account</button>
+        </form>
+    """, message=message)
+
+
+    
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    message = ""
+
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute(
+                "SELECT id, email, password_hash FROM users WHERE email = %s",
+                (email,)
+            )
+
+            user_data = cursor.fetchone()
+
+        finally:
+            cursor.close()
+            connection.close()
+
+        if user_data and check_password_hash(user_data[2], password):
+            user = User(
+                id=user_data[0],
+                email=user_data[1],
+                password_hash=user_data[2]
+            )
+
+            login_user(user)
+            return redirect(url_for("dashboard"))
+
+        message = "Invalid email address or password."
+
+    return render_template_string("""
+        <h2>Sign In to Fastlane</h2>
+
+        <p>{{ message }}</p>
+
+        <form method="POST">
+            <input
+                type="email"
+                name="email"
+                placeholder="Email address"
+                required
+            >
+
+            <br><br>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p><a href="/register">Create an account</a></p>
+    """, message=message)
+ 
     
 
 def find_value(data, wanted_key):
@@ -831,6 +987,7 @@ function copyProductDescription() {{
         return "Could not prepare listing. Check Render logs.", 500
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     try:
         connection = get_database_connection()
