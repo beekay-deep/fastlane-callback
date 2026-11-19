@@ -1512,6 +1512,23 @@ def imported_products():
         connection = get_database_connection()
         cursor = connection.cursor()
 
+
+        page = request.args.get("page", 1, type=int)
+        per_page = 20
+        offset = (page - 1) * per_page
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM imported_products WHERE user_id = %s",
+            (current_user.id,)
+        )
+        total_products = cursor.fetchone()[0]
+
+        total_pages = (total_products + per_page - 1) // per_page
+
+        if total_pages > 0:
+            page = max(1, min(page, total_pages))
+            offset = (page - 1) * per_page
+
         cursor.execute("""
             SELECT
                 item_id,
@@ -1524,7 +1541,8 @@ def imported_products():
             FROM imported_products
             WHERE user_id = %s
             ORDER BY created_at DESC
-        """, (current_user.id,))
+            LIMIT %s OFFSET %s
+        """, (current_user.id, per_page, offset))
 
         products = cursor.fetchall()
 
@@ -1622,6 +1640,24 @@ def imported_products():
             product_cards = """
             <p>No products have been imported yet.</p>
             """
+        pagination_html = ""
+
+        if total_pages > 1:
+            pagination_html = '<div style="text-align:center; margin:30px 0;">'
+
+            if page > 1:
+                pagination_html += f'<a href="/imported-products?page={page - 1}" style="margin:8px;">Previous</a>'
+
+            for page_number in range(1, total_pages + 1):
+                if page_number == page:
+                    pagination_html += f'<strong style="margin:8px; color:#2563eb;">{page_number}</strong>'
+                else:
+                    pagination_html += f'<a href="/imported-products?page={page_number}" style="margin:8px;">{page_number}</a>'
+
+            if page < total_pages:
+                pagination_html += f'<a href="/imported-products?page={page + 1}" style="margin:8px;">Next</a>'
+
+            pagination_html += '</div>'
  
         return """
         <!DOCTYPE html>
@@ -1826,6 +1862,8 @@ def imported_products():
 <div class="products">
     {product_cards}
 </div>
+
+{pagination_html}
 <script>
 
     function openImageLightbox(imageUrl) {{
@@ -1842,8 +1880,11 @@ def imported_products():
         </body>
 
         </html>
-        """.format(product_cards=product_cards)
-
+        
+        """.format(
+            product_cards=product_cards,
+            pagination_html=pagination_html
+        )
     except Exception as error:
         print("Imported products error:", str(error))
 
