@@ -1346,8 +1346,11 @@ def dashboard():
     try:
         connection = get_database_connection()
         cursor = connection.cursor()
-
-        cursor.execute("SELECT COUNT(*) FROM imported_products")
+       
+cursor.execute(
+    "SELECT COUNT(*) FROM imported_products WHERE user_id = %s",
+    (current_user.id,)
+)
         total_products = cursor.fetchone()[0]
 
         cursor.close()
