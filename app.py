@@ -223,6 +223,36 @@ def register():
                     font-size: 15px;
                 }
 
+                
+                .password-container {
+                    position: relative;
+                    width: 100%;
+                }
+
+                .password-container input {
+                    padding-right: 45px;
+                }
+
+                .toggle-password {
+                    position: absolute;
+                    right: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: auto;
+                    padding: 5px;
+                    margin: 0;
+                    background: transparent;
+                    border: none;
+                    color: #666;
+                    cursor: pointer;
+                    font-size: 18px;
+                }
+
+                .toggle-password:hover {
+                    background: transparent;
+                }
+
+
                 button {
                     width: 100%;
                     padding: 14px;
@@ -289,21 +319,45 @@ def register():
 
                         <label>Password</label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password (at least 8 characters)"
-                            required
+                         
+<div class="password-container">
+    <input
+        type="password"
+        id="register-password"
+        name="password"
+        placeholder="Password (at least 8 characters)"
+        required
+    >
+
+    <button
+        type="button"
+        class="toggle-password"
+        onclick="togglePassword('register-password', this)"
+        aria-label="Show password"
+    >👁</button>
+</div>
+
                         >
 
                         <label>Confirm password</label>
 
-                        <input
-                            type="password"
-                            name="confirm_password"
-                            placeholder="Confirm your password"
-                            required
-                        >
+ 
+<div class="password-container">
+    <input
+        type="password"
+        id="confirm-password"
+        name="confirm_password"
+        placeholder="Confirm your password"
+        required
+    >
+
+    <button
+        type="button"
+        class="toggle-password"
+        onclick="togglePassword('confirm-password', this)"
+        aria-label="Show password"
+    >👁</button>
+</div>
 
                         <button type="submit">Create Account</button>
 
@@ -317,6 +371,22 @@ def register():
                 </div>
 
             </div>
+
+        <script>
+            function togglePassword(inputId, button) {
+                const passwordInput = document.getElementById(inputId);
+
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    button.textContent = "🙈";
+                    button.setAttribute("aria-label", "Hide password");
+                } else {
+                    passwordInput.type = "password";
+                    button.textContent = "👁";
+                    button.setAttribute("aria-label", "Show password");
+                }
+            }
+        </script>
 
         </body>
         </html>
