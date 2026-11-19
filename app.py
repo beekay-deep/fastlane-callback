@@ -1179,6 +1179,7 @@ def delete_product():
 
 
 @app.route("/prepare-listing")
+@login_required
 def prepare_listing():
     try:
         item_id = request.args.get("item_id", "")
@@ -1193,9 +1194,8 @@ def prepare_listing():
         cursor.execute("""
             SELECT item_id, title, image_url, price, rating, orders, item_url, description
             FROM imported_products
-            WHERE item_id = %s
-        """, (item_id,))
-
+            WHERE item_id = %s AND user_id = %s
+        """, (item_id, current_user.id))
         product = cursor.fetchone()
 
         cursor.close()
