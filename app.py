@@ -1040,7 +1040,8 @@ def get_aliexpress_product_description(product_id):
         print("Description fetch failed:", str(error))
         return ""
 
-@app.route("/import-product", methods=["POST"]) 
+@app.route("/import-product", methods=["POST"])
+@login_required
 def import_product():
     try:
         item_id = request.form.get("item_id", "")
