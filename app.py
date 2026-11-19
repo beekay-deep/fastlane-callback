@@ -1065,7 +1065,8 @@ def import_product():
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS imported_products (
                     id SERIAL PRIMARY KEY,
-                    item_id TEXT UNIQUE NOT NULL,
+                    item_id TEXT NOT NULL,
+                    user_id INTEGER NOT NULL REFERENCES users(id),
                     title TEXT,
                     image_url TEXT,
                     price TEXT,
@@ -1073,7 +1074,8 @@ def import_product():
                     orders TEXT,
                     item_url TEXT,
                     description TEXT,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE (user_id, item_id)
                 )
             """)
 
@@ -1085,11 +1087,11 @@ def import_product():
              
             cursor.execute("""
                 INSERT INTO imported_products (
-                    item_id, title, image_url, price,
+                    item_id, user_id, title, image_url, price,
                     rating, orders, item_url, description
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (item_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (user_id, item_id)
                 DO UPDATE SET
                     title = EXCLUDED.title,
                     image_url = EXCLUDED.image_url,
@@ -1099,7 +1101,7 @@ def import_product():
                     item_url = EXCLUDED.item_url,
                     description = EXCLUDED.description
             """, (
-                item_id, title, image_url, price,
+                item_id, current_user.id, title, image_url, price,
                 rating, orders, item_url, description
             ))
 
