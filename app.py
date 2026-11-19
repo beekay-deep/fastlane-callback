@@ -337,7 +337,7 @@ def register():
     >👁</button>
 </div>
 
-                        >
+                        
 
                         <label>Confirm password</label>
 
