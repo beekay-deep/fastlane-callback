@@ -1898,7 +1898,31 @@ def imported_products():
         )
 
 
- 
+@app.route("/connect-aliexpress")
+@login_required
+def connect_aliexpress():
+    state = secrets.token_urlsafe(32)
+    session["aliexpress_oauth_state"] = state
+    session["aliexpress_fastlane_user_id"] = current_user.id
+
+    app_key = os.environ.get("ALIEXPRESS_APP_KEY")
+    callback_url = "https://fastlane-callback.onrender.com/callback"
+
+    if not app_key:
+        return "AliExpress app key is not configured.", 500
+
+    authorization_url = (
+        "https://api-sg.aliexpress.com/oauth/authorize?"
+        + urllib.parse.urlencode({
+            "response_type": "code",
+            "force_auth": "true",
+            "redirect_uri": callback_url,
+            "client_id": app_key,
+            "state": state
+        })
+    )
+
+    return redirect(authorization_url) 
 
  
 @app.route("/product-search")
