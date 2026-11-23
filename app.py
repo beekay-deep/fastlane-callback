@@ -2683,6 +2683,15 @@ def home():
 @app.route("/callback")
 def callback():
     code = request.args.get("code")
+        returned_state = request.args.get("state")
+    saved_state = session.pop("aliexpress_oauth_state", None)
+    fastlane_user_id = session.pop("aliexpress_fastlane_user_id", None)
+
+    if not returned_state or not saved_state or not hmac.compare_digest(returned_state, saved_state):
+        return "Authorization failed: invalid security state.", 400
+
+    if not fastlane_user_id:
+        return "Authorization failed: Fastlane customer session not found.", 400
 
     if not code:
         return """
