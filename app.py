@@ -2683,7 +2683,7 @@ def home():
 @app.route("/callback")
 def callback():
     code = request.args.get("code")
-        returned_state = request.args.get("state")
+    returned_state = request.args.get("state")
     saved_state = session.pop("aliexpress_oauth_state", None)
     fastlane_user_id = session.pop("aliexpress_fastlane_user_id", None)
 
