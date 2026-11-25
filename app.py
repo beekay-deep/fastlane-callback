@@ -621,7 +621,8 @@ def find_value(data, wanted_key):
     return None
 
  
-def save_tokens(token_data):
+
+def save_tokens(token_data, fastlane_user_id):
     access_token = find_value(token_data, "access_token")
     refresh_token = find_value(token_data, "refresh_token")
     expires_in = find_value(token_data, "expires_in")
@@ -649,7 +650,9 @@ def save_tokens(token_data):
                 seller_id TEXT,
                 account_id TEXT,
                 user_id TEXT,
+                fastlane_user_id INTEGER REFERENCES users(id),
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                
             )
         """)
 
@@ -672,21 +675,19 @@ def save_tokens(token_data):
             ADD COLUMN IF NOT EXISTS description TEXT
         """)
 
+        
         cursor.execute("""
-            DELETE FROM aliexpress_tokens
-        """)
-
-        cursor.execute("""
-            INSERT INTO aliexpress_tokens (
-                access_token,
-                refresh_token,
-                expires_in,
-                refresh_expires_in,
-                seller_id,
-                account_id,
-                user_id
-            )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            UPDATE aliexpress_tokens
+            SET
+                access_token = %s,
+                refresh_token = %s,
+                expires_in = %s,
+                refresh_expires_in = %s,
+                seller_id = %s,
+                account_id = %s,
+                user_id = %s,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE fastlane_user_id = %s
         """, (
             access_token,
             refresh_token,
@@ -694,8 +695,33 @@ def save_tokens(token_data):
             refresh_expires_in,
             seller_id,
             account_id,
-            user_id
+            user_id,
+            fastlane_user_id
         ))
+
+        if cursor.rowcount == 0:
+            cursor.execute("""
+                INSERT INTO aliexpress_tokens (
+                    access_token,
+                    refresh_token,
+                    expires_in,
+                    refresh_expires_in,
+                    seller_id,
+                    account_id,
+                    user_id,
+                    fastlane_user_id
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                access_token,
+                refresh_token,
+                expires_in,
+                refresh_expires_in,
+                seller_id,
+                account_id,
+                user_id,
+                fastlane_user_id
+            ))  
 
         connection.commit()
 
@@ -706,7 +732,7 @@ def save_tokens(token_data):
     return True
 
 
-def refresh_aliexpress_token():
+def refresh_aliexpress_token(fastlane_user_id):
     app_key = os.environ.get("ALIEXPRESS_APP_KEY")
     app_secret = os.environ.get("ALIEXPRESS_APP_SECRET")
 
@@ -724,9 +750,10 @@ def refresh_aliexpress_token():
         cursor.execute("""
             SELECT id, refresh_token, refresh_expires_in, updated_at
             FROM aliexpress_tokens
+            WHERE fastlane_user_id = %s
             ORDER BY updated_at DESC
             LIMIT 1
-        """)
+        """, (fastlane_user_id,))
 
         row = cursor.fetchone()
 
@@ -876,6 +903,7 @@ def api_test():
     except Exception as error:
         print("API test failed:", str(error))
 @app.route("/product-test")
+@login_required
 def product_test():
     try:
         connection = get_database_connection()
@@ -884,9 +912,10 @@ def product_test():
         cursor.execute("""
             SELECT access_token
             FROM aliexpress_tokens
+            WHERE fastlane_user_id = %s
             ORDER BY updated_at DESC
             LIMIT 1
-        """)
+        """, (current_user.id,))
 
         row = cursor.fetchone()
 
@@ -957,7 +986,7 @@ def product_test():
         print("Product API test failed:", str(error))
         return "Product API test failed. Check Render logs.", 500
  
-def get_aliexpress_product_description(product_id):
+def get_aliexpress_product_description(product_id, fastlane_user_id):
     try:
         connection = get_database_connection()
         cursor = connection.cursor()
@@ -965,9 +994,10 @@ def get_aliexpress_product_description(product_id):
         cursor.execute("""
             SELECT access_token
             FROM aliexpress_tokens
+            WHERE fastlane_user_id = %s
             ORDER BY updated_at DESC
             LIMIT 1
-        """)
+        """, (fastlane_user_id,))
 
         row = cursor.fetchone()
         cursor.close()
@@ -1053,7 +1083,7 @@ def import_product():
         orders = request.form.get("orders", "")
         item_url = request.form.get("item_url", "")
         
-        description = get_aliexpress_product_description(item_id)
+        description = get_aliexpress_product_description(item_id, current_user.id)
         
         if not item_id:
             return "Import failed: Product ID is missing.", 400
@@ -1922,10 +1952,12 @@ def connect_aliexpress():
         })
     )
 
-    return redirect(authorization_url) 
 
- 
+        return redirect(authorization_url)
+
+
 @app.route("/product-search")
+@login_required
 def product_search():
     try:
         keyword = request.args.get("keyword", "wall art")
@@ -1936,9 +1968,10 @@ def product_search():
         cursor.execute("""
             SELECT access_token, expires_in, updated_at
             FROM aliexpress_tokens
+            WHERE fastlane_user_id = %s
             ORDER BY updated_at DESC
             LIMIT 1
-        """)
+        """, (current_user.id,))
 
         row = cursor.fetchone()
 
@@ -1959,7 +1992,7 @@ def product_search():
             expires_in is None
             or updated_at.timestamp() + int(expires_in) <= time.time() + 300
         ):
-            access_token = refresh_aliexpress_token()
+            access_token = refresh_aliexpress_token(current_user.id)
 
             if not access_token:
                 return "Product search: Unable to refresh AliExpress access token. Please authorize again if necessary.", 500
@@ -2734,8 +2767,8 @@ def callback():
             response_body = response.read().decode("utf-8")
 
         token_data = json.loads(response_body)
-
-        saved = save_tokens(token_data)
+   
+        saved = save_tokens(token_data, fastlane_user_id)
 
         if not saved:
             return """
