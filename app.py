@@ -1377,10 +1377,38 @@ def logout():
     logout_user()
     session.clear()
     return redirect(url_for("login"))
+    
+@app.route("/update-store-name", methods=["POST"])
+@login_required
+def update_store_name():
+    store_name = request.form.get("store_name", "").strip()
+
+    if len(store_name) > 100:
+        return "Store name must be 100 characters or less.", 400
+
+    connection = get_database_connection()
+
+    try:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "UPDATE users SET store_name = %s WHERE id = %s",
+            (store_name, current_user.id)
+        )
+
+        connection.commit()
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    return redirect(url_for("dashboard"))
 
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    store_name = ""
+
     try:
         connection = get_database_connection()
         cursor = connection.cursor()
@@ -1390,6 +1418,11 @@ def dashboard():
             (current_user.id,)
         )
         total_products = cursor.fetchone()[0]
+        cursor.execute(
+            "SELECT store_name FROM users WHERE id = %s",
+            (current_user.id,)
+        )
+        store_name = cursor.fetchone()[0] or ""
 
         cursor.close()
         connection.close()
@@ -1494,16 +1527,64 @@ def dashboard():
         Manage your AliExpress dropshipping business.
     </p>
 
-    <a href="/logout" style="
-        background: #dc2626;
-        color: white;
-        padding: 12px 22px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
+
+        <div style="
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
     ">
-        Logout
-    </a>
+        <a href="/logout" style="
+            background: #dc2626;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        ">
+            Logout
+        </a>
+
+        <span style="
+            font-size: 14px;
+            color: #1769d2;
+            font-weight: bold;
+        ">
+            {{ store_name }}
+        </span>
+
+        <form method="POST" action="/update-store-name" style="
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        ">
+            <input
+                type="text"
+                name="store_name"
+                value="{{ store_name }}"
+                placeholder="Enter your store name"
+                maxlength="100"
+                style="
+                    width: 200px;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                "
+            >
+
+            <button type="submit" style="
+                background: #1769d2;
+                color: white;
+                border: none;
+                padding: 7px 16px;
+                border-radius: 6px;
+                cursor: pointer;
+            ">
+                Save Store Name
+            </button>
+        </form>
+    </div>
 </div>
 
 <div class="menu-card" style="margin-bottom: 20px;">
@@ -1564,7 +1645,15 @@ def dashboard():
 
     </html>
     """
-    return dashboard_html.replace("TOTAL_PRODUCTS_PLACEHOLDER", str(total_products))
+    
+    dashboard_html = dashboard_html.replace(
+        "TOTAL_PRODUCTS_PLACEHOLDER", str(total_products)
+    )
+
+    return render_template_string(
+        dashboard_html,
+        store_name=store_name
+    )
     
 @app.route("/imported-products")
 @login_required
