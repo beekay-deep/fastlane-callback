@@ -1371,6 +1371,13 @@ function copyProductDescription() {{
         print("Prepare listing error:", str(error))
         return "Could not prepare listing. Check Render logs.", 500
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    session.clear()
+    return redirect(url_for("login"))
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -1475,9 +1482,29 @@ def dashboard():
 <div class="brand">
     <img src="/static/fastlane-logo.png" alt="Fastlane logo" style="width: 260px; max-width: 100%; height: auto;">
 </div>
-<p class="subtitle">
-    Manage your AliExpress dropshipping business.
-</p>
+
+<div style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+">
+    <p class="subtitle">
+        Manage your AliExpress dropshipping business.
+    </p>
+
+    <a href="/logout" style="
+        background: #dc2626;
+        color: white;
+        padding: 12px 22px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    ">
+        Logout
+    </a>
+</div>
 
 <div class="menu-card" style="margin-bottom: 20px;">
 
