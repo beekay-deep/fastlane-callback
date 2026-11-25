@@ -1953,7 +1953,7 @@ def connect_aliexpress():
     )
 
 
-        return redirect(authorization_url)
+    return redirect(authorization_url)
 
 
 @app.route("/product-search")
